@@ -1,16 +1,6 @@
-"use client";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export default function Header() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      setIsAuthenticated(true);
-    }
-  }, []);
+export default function Header({isAuthenticated, setIsAuthenticated}) {
 
   const handleLogout = () => {
     localStorage.removeItem('jwt');

@@ -1,28 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from "next/image";
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function Libro ({libro, onShowAlert }) {
+export default function Libro ({libro, onShowAlert, isAuthenticated, esFavorito, favoritoId, onFavoriteChange}) {
     const {portada, titulo, autor} = libro.attributes;
+    const { id } = libro;
 
     const handleFavoriteClick = () => {
-        onShowAlert('Para poder marcar un libro como favorito tiene que estar registrado y autenticado en el sistema.');
+        if (isAuthenticated) {
+            onFavoriteChange(libro.id, esFavorito, favoritoId);
+        } else {
+            onShowAlert('Para poder marcar un libro como favorito tiene que estar registrado y autenticado en el sistema.');
+        }
     };
 
     const handleLoanClick = () => {
-        onShowAlert('Para poder reservar un libro tiene que estar registrado y autenticado en el sistema.');
-    };
+        if (isAuthenticated) {
 
-    console.log("Libro renderizado");
+        } else {
+            onShowAlert('Para poder reservar un libro tiene que estar registrado y autenticado en el sistema.');
+        }
+    };
 
     return (
         <div className="flex flex-col items-center">
             <div className="bg-white rounded-xl w-72 h-auto py-4 shadow-md transform transition duration-200 hover:scale-105">
                 <div className="absolute top-2 left-2">
                     <button onClick={handleFavoriteClick}>
-                        <FontAwesomeIcon icon={farHeart} size="lg"/>
+                        <FontAwesomeIcon icon={esFavorito ? fasHeart : farHeart} size="lg"/> 
                     </button>
                 </div>
                 <div className="flex justify-center">

@@ -1,17 +1,36 @@
-import Listado from "./catalogo/listado";
-import Header from "./header";
+"use client";
 
-async function getData() {
-  const res = await fetch(`${process.env.API_URL}/api/libros?populate=*`, { next : { revalidate : 3600 } })
-  return res.json()
-}
- 
-export default async function Catalogo() {
-  const libros = await getData();
-  return(
+import { useState, useEffect } from 'react';
+import Listado from './catalogo/listado';
+import Header from './header';
+
+export default function Catalogo() {
+  const [libros, setLibros] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      setIsAuthenticated(true);
+    }
+    
+    const fetchData = async () => {
+      try {
+        const res = await fetch('http://localhost:1337/api/libros?populate=*', { next: { revalidate: 3600 } });
+        const data = await res.json();
+        setLibros(data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
     <main>
-      <Header />
-      <Listado libros={libros.data}/>
+      <Header isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+      <Listado isAuthenticated={isAuthenticated} libros={libros} />
     </main>
   );
 }
