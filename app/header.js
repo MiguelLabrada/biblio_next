@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useAuth } from './AuthContext';
 
-export default function Header({isAuthenticated, setIsAuthenticated}) {
+export default function Header() {
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
 
   const handleLogout = () => {
     localStorage.removeItem('jwt');

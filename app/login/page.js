@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
+import { useAuth } from '../AuthContext';
 import PopUp from './popup';
 import Header from '../header';
 
@@ -9,6 +10,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState('');
+    const { setIsAuthenticated } = useAuth();
     const router = useRouter();
 
     const handleSubmit = async (e) => {
@@ -43,6 +45,8 @@ export default function Login() {
         localStorage.setItem('id', data.user.id);
         localStorage.setItem('rol', data.user.role);
 
+        setIsAuthenticated(true);
+        
         if (localStorage.getItem('jwt')) {
             router.push('/');
         }

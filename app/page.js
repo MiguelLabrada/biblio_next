@@ -1,18 +1,18 @@
 "use client";
-
 import { useState, useEffect } from 'react';
 import Listado from './catalogo/listado';
 import Header from './header';
+import { useAuth } from './AuthContext';
 
 export default function Catalogo() {
   const [libros, setLibros] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { setIsAuthenticated } = useAuth();
 
   useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
+    /*const jwt = localStorage.getItem('jwt');
     if (jwt) {
       setIsAuthenticated(true);
-    }
+    }*/
     
     const fetchLibros = async () => {
       try {
@@ -25,12 +25,12 @@ export default function Catalogo() {
     };
 
     fetchLibros();
-  }, []);
+  }, [/*setIsAuthenticated*/]);
 
   return (
     <main>
-      <Header isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
-      <Listado isAuthenticated={isAuthenticated} libros={libros} />
+      <Header/>
+      <Listado libros={libros} />
     </main>
   );
 }

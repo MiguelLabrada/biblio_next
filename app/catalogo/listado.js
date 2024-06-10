@@ -1,9 +1,10 @@
 "use client";
 import { useState, useEffect } from 'react';
+import { useAuth } from '../AuthContext';
 import Libro from "./libro";
 import PopUp from './popup';
 
-export default function Listado ({libros, isAuthenticated}) {
+export default function Listado ({libros}) {
     const [searchTerm, setSearchTerm] = useState('');
     const [authorTerm, setAuthorTerm] = useState('');
     const [generoSeleccionado, setGeneroSeleccionado] = useState('');
@@ -11,6 +12,7 @@ export default function Listado ({libros, isAuthenticated}) {
     const [popupMessage, setPopupMessage] = useState('');
     const [favoritos, setFavoritos] = useState([]);
     const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+    const { isAuthenticated } = useAuth();
 
     const generos = [
         'Fantasía', 
@@ -198,17 +200,17 @@ export default function Listado ({libros, isAuthenticated}) {
                 )}
             </div>
             <div className="bg-[#D6DBDC] mt-48 pt-6 pb-4 grid gap-y-7 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {librosConFavorito.map(libro => (
-                    <Libro 
-                        key={libro.id} 
-                        libro={libro} 
-                        isAuthenticated={isAuthenticated} 
-                        onShowAlert={handleShowPopup} 
-                        esFavorito={libro.esFavorito}
-                        favoritoId={libro.favoritoId} 
-                        onFavoriteChange={handleFavoriteChange} // Pass the handler to Libro component
-                    />
-                ))}
+                {librosConFavorito.map(libro => (
+                        <Libro 
+                            key={libro.id} 
+                            libro={libro} 
+                            isAuthenticated={isAuthenticated} 
+                            onShowAlert={handleShowPopup} 
+                            esFavorito={libro.esFavorito}
+                            favoritoId={libro.favoritoId} 
+                            onFavoriteChange={handleFavoriteChange} // Pass the handler to Libro component
+                        />
+                    ))}
             </div>
         </div>
     );
