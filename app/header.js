@@ -19,7 +19,10 @@ export default function Header({isAuthenticated, setIsAuthenticated}) {
         <div className="flex items-center space-x-7">
           <Link href="/" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Catálogo</Link>
           {isAuthenticated ? (
-            <button onClick={handleLogout} className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Cerrar Sesión</button>
+            <div className="flex items-center space-x-7">
+              <Link href="/misprestamos" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mis préstamos</Link>
+              <button onClick={handleLogout} className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Cerrar Sesión</button>
+            </div>
           ) : (
             <Link href="/login" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Iniciar Sesión</Link>
           )}

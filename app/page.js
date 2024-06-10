@@ -14,7 +14,7 @@ export default function Catalogo() {
       setIsAuthenticated(true);
     }
     
-    const fetchData = async () => {
+    const fetchLibros = async () => {
       try {
         const res = await fetch('http://localhost:1337/api/libros?populate=*', { next: { revalidate: 3600 } });
         const data = await res.json();
@@ -24,7 +24,7 @@ export default function Catalogo() {
       }
     };
 
-    fetchData();
+    fetchLibros();
   }, []);
 
   return (
