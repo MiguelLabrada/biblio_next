@@ -52,12 +52,14 @@ export default function Libro ({libro, onShowAlert, isAuthenticated, esFavorito,
 
     return (
         <div className="flex flex-col items-center">
-            <div className="bg-white rounded-xl w-72 h-auto py-4 shadow-md transform transition duration-200 hover:scale-105">
+            <div className="bg-white rounded-xl w-72 h-auto py-4 shadow-md transform transition duration-200 hover:scale-105">             
+                {localStorage.getItem("rol") != 3 &&
                 <div className="absolute top-2 left-2">
                     <button onClick={handleFavoriteClick}>
                         <FontAwesomeIcon icon={esFavorito ? fasHeart : farHeart} size="lg"/> 
                     </button>
                 </div>
+                }
                 <div className="flex justify-center">
                     <Image width={200} height={200} src={portada.data.attributes.url} alt={`Portada libro ${titulo}`} />
                 </div>
@@ -71,7 +73,7 @@ export default function Libro ({libro, onShowAlert, isAuthenticated, esFavorito,
                         onClick={handleLoanClick}
                         disabled={disponibilidad === 0}
                     >
-                        RESERVAR
+                        {localStorage.getItem("rol") != 3 ? 'RESERVAR' : 'PRESTAR' }
                     </button>
                 </div>
             </div>

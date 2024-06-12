@@ -33,17 +33,34 @@ export default function Login() {
             if (!res.ok) {
                 throw new Error(data.error.message);
             }
+
+            const userData = await fetchUserProfile(data.jwt);
     
-            setToken(data);
+            setToken(data, userData);
         } catch (error) {
             handleShowPopup(error.message);
         }
     }
 
-    const setToken = (data) => {
+    const fetchUserProfile = async (jwt) => {
+        const res = await fetch(`http://localhost:1337/api/users/me?populate=*`, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            }
+        });
+
+        if (!res.ok) {
+            throw new Error('Error fetching user profile');
+        }
+
+        const userData = await res.json();
+        return userData;
+    };
+
+    const setToken = (data, userData) => {
         localStorage.setItem('jwt', data.jwt);
         localStorage.setItem('id', data.user.id);
-        localStorage.setItem('rol', data.user.role);
+        localStorage.setItem('rol', userData.role.id);
 
         setIsAuthenticated(true);
         

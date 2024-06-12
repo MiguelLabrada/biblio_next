@@ -6,14 +6,9 @@ import { useAuth } from './AuthContext';
 
 export default function Catalogo() {
   const [libros, setLibros] = useState([]);
-  const { setIsAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    /*const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      setIsAuthenticated(true);
-    }*/
-    
     const fetchLibros = async () => {
       try {
         const res = await fetch('http://localhost:1337/api/libros?populate=*', { next: { revalidate: 3600 } });
@@ -24,8 +19,9 @@ export default function Catalogo() {
       }
     };
 
-    fetchLibros();
-  }, [/*setIsAuthenticated*/]);
+    fetchLibros();  
+
+  }, [isAuthenticated]);
 
   return (
     <main>

@@ -3,7 +3,7 @@ import { useAuth } from "../AuthContext";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Header from "../header";
-import Image from "next/image";
+import Prestamo from "./prestamo";
 
 export default function MisPrestamos() {
     const { isAuthenticated } = useAuth();
@@ -80,7 +80,7 @@ export default function MisPrestamos() {
 
     return (
         <main>
-            <Header/>
+            <Header />
             <div className="bg-[#D6DBDC] text-center fixed top-14 w-full z-10 py-6">
                 <h1 className="text-4xl font-bold">Mis préstamos</h1>
             </div>
@@ -104,45 +104,12 @@ export default function MisPrestamos() {
                     </button>
                 </div>
             </div>
-            <div className="bg-[#D6DBDC] mt-44 pt-10 pb-4">
-                {filteredPrestamos.map(prestamo => {
-                    const { id, attributes, isDevolucionPendiente, isEnPrestamo } = prestamo;
-                    const { estado, fecha_lim_reserva, fecha_prestamo, fecha_lim_prestamo, fecha_devolucion, ejemplar } = attributes;
-                    const { libro } = ejemplar.data.attributes;
-                    const { titulo, portada } = libro.data.attributes;
-                    const portadaUrl = portada.data.attributes.url;
-
-                    return (
-                        <div key={id} className="flex items-center p-4 bg-white shadow-md rounded-lg">
-                            <Image width={150} height={150} src={portadaUrl} alt={titulo} className="mr-4" />
-                            <div className="flex flex-col flex-grow">
-                                <h2 className="text-xl font-bold">{titulo}</h2>
-                                {estado === "Reservado" && <p className="text-gray-600">Fecha límite de recogida: {fecha_lim_reserva}</p>}
-                                {isDevolucionPendiente && 
-                                <>
-                                    <p className="text-gray-600">Fecha de recogida: {fecha_prestamo}</p>
-                                    <span>Devuelva inmediatamente el libro a la biblioteca</span>
-                                </>}
-                                {isEnPrestamo && 
-                                <>
-                                    <p className="text-gray-600">Fecha de recogida: {fecha_prestamo}</p>
-                                    <p className="text-gray-600">Fecha límite de devolución: {fecha_lim_prestamo}</p>
-                                </>}
-                                {estado === "Devuelto" && 
-                                <>
-                                    <p className="text-gray-600">Fecha de recogida: {fecha_prestamo}</p>
-                                    <p className="text-gray-600">Fecha de devolución: {fecha_devolucion}</p>
-                                </>}
-                            </div>
-                            <span className="px-3 py-1 rounded-lg">
-                                {estado === "Reservado" && 'Recogida pendiente'}
-                                {estado === "Devuelto" && 'Devuelto'}
-                                {isDevolucionPendiente && 'Devolución pendiente'}
-                                {isEnPrestamo && 'En préstamo'}
-                            </span>
-                        </div>
-                    );
-                })}
+            <div className="bg-[#D6DBDC] mt-48 pt-10 pb-4">
+                <div className="max-w-6xl mx-auto">
+                    {filteredPrestamos.map(prestamo => (
+                        <Prestamo key={prestamo.id} prestamo={prestamo} />
+                    ))}
+                </div>
             </div>
         </main>
     );
