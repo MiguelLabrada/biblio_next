@@ -186,7 +186,7 @@ export default function Listado ({libros}) {
                         className="p-2.5 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border-l-0 border border-gray-300 rounded-e-lg" 
                         placeholder="Buscar autor..."/>
                 </div>
-                {localStorage.getItem("rol") == 6 && (
+                {isAuthenticated && localStorage.getItem("rol") == 6 && (
                     <label className="inline-flex items-center cursor-pointer ml-5">
                         <input 
                             type="checkbox" 
@@ -204,11 +204,8 @@ export default function Listado ({libros}) {
                         <Libro 
                             key={libro.id} 
                             libro={libro} 
-                            isAuthenticated={isAuthenticated} 
-                            onShowAlert={handleShowPopup} 
-                            esFavorito={libro.esFavorito}
-                            favoritoId={libro.favoritoId} 
-                            onFavoriteChange={handleFavoriteChange} // Pass the handler to Libro component
+                            onShowAlert={handleShowPopup}  
+                            onFavoriteChange={handleFavoriteChange}
                         />
                     ))}
             </div>

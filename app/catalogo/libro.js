@@ -1,17 +1,19 @@
 import { useState } from "react";
+import { useAuth } from "../AuthContext";
 import Image from "next/image";
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Confirmation from "./confirmation";
 
-export default function Libro ({libro, onShowAlert, isAuthenticated, esFavorito, favoritoId, onFavoriteChange}) {
+export default function Libro ({libro, onShowAlert, onFavoriteChange}) {
     const {portada, titulo, autor, disponibilidad} = libro.attributes;
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const { isAuthenticated } = useAuth();
 
     const handleFavoriteClick = () => {
         if (isAuthenticated) {
-            onFavoriteChange(libro.id, esFavorito, favoritoId);
+            onFavoriteChange(libro.id, libro.esFavorito, libro.favoritoId);
         } else {
             onShowAlert('Para poder marcar un libro como favorito tiene que estar registrado y autenticado en el sistema.');
         }
@@ -56,7 +58,7 @@ export default function Libro ({libro, onShowAlert, isAuthenticated, esFavorito,
                 {localStorage.getItem("rol") != 3 &&
                 <div className="absolute top-2 left-2">
                     <button onClick={handleFavoriteClick}>
-                        <FontAwesomeIcon icon={esFavorito ? fasHeart : farHeart} size="lg"/> 
+                        <FontAwesomeIcon icon={libro.esFavorito ? fasHeart : farHeart} size="lg"/> 
                     </button>
                 </div>
                 }
