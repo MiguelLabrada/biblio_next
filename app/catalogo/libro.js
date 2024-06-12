@@ -6,7 +6,7 @@ import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Confirmation from "./confirmation";
 
-export default function Libro ({libro, onShowAlert, onFavoriteChange}) {
+export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBook }) {
     const {portada, titulo, autor, disponibilidad} = libro.attributes;
     const [showConfirmation, setShowConfirmation] = useState(false);
     const { isAuthenticated } = useAuth();
@@ -27,24 +27,8 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange}) {
         }
     };
 
-    const reserveBook = async () => {
-        const usuario = localStorage.getItem('userId');
-        const jwt = localStorage.getItem('jwt');
-        
-        const response = await fetch('http://localhost:1337/api/prestamos', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-            },
-            body: JSON.stringify({
-                data: {
-                    ejemplar: libro.id,
-                    usuario: usuario
-                }
-            })
-        });
-
+    const confirmLoan = () => {
+        reserveBook(libro.id);
         setShowConfirmation(false);
     };
 
@@ -82,7 +66,7 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange}) {
             {showConfirmation && (
                 <Confirmation
                     titulo={titulo}
-                    onConfirm={reserveBook}
+                    onConfirm={confirmLoan}
                     onCancel={cancelLoan}
                 />
             )}

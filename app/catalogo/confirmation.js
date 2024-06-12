@@ -19,7 +19,7 @@ export default function Confirmation({ titulo, onConfirm, onCancel }) {
                     <p className="text-gray-500 my-2">¿Desea reservar el libro &apos;{titulo}&apos;?</p>
                     <div className="flex justify-center mt-4">
                         <button onClick={onCancel} className="bg-gray-200 text-gray-700 px-4 py-2 rounded mr-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">Cancelar</button>
-                        <button /*onClick={onConfirm}*/ className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">Confirmar</button>
+                        <button onClick={onConfirm} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">Confirmar</button>
                     </div>
                 </div>
             </div>
