@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faClock, faBook, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import Confirmation from "./confirmation";
 
 export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
     const { id, isEnPrestamo, isDevolucionPendiente } = prestamo;
@@ -10,8 +12,43 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
     const { libro } = ejemplar.data.attributes;
     const { titulo, portada } = libro.data.attributes;
     const portadaUrl = portada.data.attributes.url;
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [currentAction, setCurrentAction] = useState(null);
+    const [currentMessage, setCurrentMessage] = useState('');
 
-    const deletePrestamo = () => {
+    const handleButtonClick = (action) => {
+        setCurrentMessage(`¿Desea ${action} el préstamo del libro '${titulo}' al usuario '${username}'?`);
+        setCurrentAction(action);
+        setShowConfirmation(true);
+    };
+
+    const cancelConfirmation = () => {
+        setShowConfirmation(false);
+        setCurrentAction(null);
+        setCurrentMessage('');
+    };
+
+    const acceptConfirmation = () => {
+        switch (currentAction) {
+            case 'cancelar':
+                handleCancelar();
+                break;
+            case 'renovar':
+                handleRenovar();
+                break;
+            case 'realizar':
+                handlePrestar();
+                break;
+            case 'devolver':
+                handleDevolver();
+                break;
+            default:
+                break;
+        }
+        cancelConfirmation();
+    };
+
+    const handleCancelar = () => {
         onEliminar(id);
     };
 
@@ -21,12 +58,12 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
         onUpdate(id, "Prestado", { fecha_lim_prestamo: fechaLimPrestamo });
     };
 
-    const handleCambiarADevuelto = () => {
+    const handleDevolver = () => {
         const fechaDevolucion = new Date();
         onUpdate(id, "Devuelto", { fecha_devolucion: fechaDevolucion });
     };
 
-    const handleCambiarAPrestado = () => {
+    const handlePrestar = () => {
         const fechaPrestamo = new Date();
         const fechaLimPrestamo = new Date();
         fechaLimPrestamo.setDate(fechaLimPrestamo.getDate() + 21);
@@ -86,13 +123,13 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
                     <>
                         <button 
                             className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300"
-                            onClick={handleRenovar}
+                            onClick={() => handleButtonClick('renovar')}
                         >
                             Renovar
                         </button>
                         <button 
                             className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-lg shadow-md hover:bg-sky-600 transition duration-300"
-                            onClick={handleCambiarADevuelto}
+                            onClick={() => handleButtonClick('devolver')}
                         >
                             Cambiar a devuelto
                         </button>
@@ -102,13 +139,13 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
                     <>
                         <button 
                             className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300"
-                            onClick={deletePrestamo}
+                            onClick={() => handleButtonClick('cancelar')}
                         >
                             Cancelar préstamo
                         </button>
                         <button 
                             className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300"
-                            onClick={handleCambiarAPrestado}
+                            onClick={() => handleButtonClick('realizar')}
                         >
                             Cambiar a prestado
                         </button>
@@ -117,12 +154,19 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
                 {isDevolucionPendiente && (
                     <button 
                         className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-lg shadow-md hover:bg-sky-600 transition duration-300"
-                        onClick={handleCambiarADevuelto}
+                        onClick={() => handleButtonClick('devolver')}
                     >
                         Cambiar a devuelto
                     </button>
                 )}
             </div>
+            {showConfirmation && (
+                <Confirmation
+                    mensaje={currentMessage}
+                    onConfirm={acceptConfirmation}
+                    onCancel={cancelConfirmation}
+                />
+            )}
         </div>
     );
 }
