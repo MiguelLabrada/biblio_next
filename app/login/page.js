@@ -60,6 +60,7 @@ export default function Login() {
     const setToken = (data, userData) => {
         localStorage.setItem('jwt', data.jwt);
         localStorage.setItem('id', data.user.id);
+        localStorage.setItem('username', data.user.username);
         localStorage.setItem('rol', userData.role.id);
 
         setIsAuthenticated(true);

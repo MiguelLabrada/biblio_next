@@ -106,9 +106,11 @@ export default function Catalogo() {
     }
   };
 
-  const reserveBook = (id) => {
+  const reserveBook = (id, username) => {
     const jwt = localStorage.getItem('jwt');
-    const userId = localStorage.getItem('id');
+    if(localStorage.getItem("rol") == 6){
+      username = localStorage.getItem("username");
+    }
     fetch('http://localhost:1337/api/prestamos', {
       method: 'POST',
       headers: {
@@ -118,7 +120,7 @@ export default function Catalogo() {
       body: JSON.stringify({
         data: {
           ejemplar: id,
-          usuario: userId
+          usuario: username
         }
       })
     })

@@ -4,11 +4,13 @@ import Image from "next/image";
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Confirmation from "./confirmation";
+import ReserveConfirmation from "./reserve-confirmation";
+import LoanConfirmation from "./loan-confirmation";
 
 export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBook }) {
     const {portada, titulo, autor, disponibilidad} = libro.attributes;
-    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [reserveConfirmation, setReserveConfirmation] = useState(false);
+    const [loanConfirmation, setLoanConfirmation] = useState(false);
     const { isAuthenticated } = useAuth();
 
     const handleFavoriteClick = () => {
@@ -19,21 +21,34 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
         }
     };
 
-    const handleLoanClick = () => {
+    const handleReserveClick = () => {
         if (isAuthenticated) {
-            setShowConfirmation(true);
+            setReserveConfirmation(true);
         } else {
             onShowAlert('Para poder reservar un libro tiene que estar registrado y autenticado en el sistema.');
         }
     };
 
-    const confirmLoan = () => {
+    const confirmReserve = () => {
         reserveBook(libro.id);
-        setShowConfirmation(false);
+        setReserveConfirmation(false);
+    };
+
+    const cancelReserve = () => {
+        setReserveConfirmation(false);
+    };
+    
+    const handleLoanClick = () => {
+        setLoanConfirmation(true);
+    };
+
+    const confirmLoan = (username) => {
+        reserveBook(libro.id, username);
+        setLoanConfirmation(false);
     };
 
     const cancelLoan = () => {
-        setShowConfirmation(false);
+        setLoanConfirmation(false);
     };
 
     return (
@@ -56,15 +71,22 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
                 </div>
                 <div className="flex justify-center">
                     <button className={`bg-blue-400 text-white font-bold py-2 px-4 rounded ${disponibilidad === 0 ? 'opacity-50 cursor-not-allowed' : ''}`} 
-                        onClick={handleLoanClick}
+                        onClick={localStorage.getItem("rol") != 3 ? handleReserveClick : handleLoanClick}
                         disabled={disponibilidad === 0}
                     >
                         {localStorage.getItem("rol") != 3 ? 'RESERVAR' : 'PRESTAR' }
                     </button>
                 </div>
             </div>
-            {showConfirmation && (
-                <Confirmation
+            {reserveConfirmation && (
+                <ReserveConfirmation
+                    titulo={titulo}
+                    onConfirm={confirmReserve}
+                    onCancel={cancelReserve}
+                />
+            )}
+            {loanConfirmation && (
+                <LoanConfirmation
                     titulo={titulo}
                     onConfirm={confirmLoan}
                     onCancel={cancelLoan}
