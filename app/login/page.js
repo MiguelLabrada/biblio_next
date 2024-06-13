@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from '../AuthContext';
 import PopUp from './popup';
 import Header from '../header';
+import Link from "next/link";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -33,7 +34,7 @@ export default function Login() {
             if (!res.ok) {
                 throw new Error(data.error.message);
             }
-
+            console.log(data);
             const userData = await fetchUserProfile(data.jwt);
     
             setToken(data, userData);
@@ -121,7 +122,7 @@ export default function Login() {
                         </div>
                         <button type="submit" className="w-full text-white bg-blue-400 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Iniciar sesión</button>
                         <p className="text-sm font-light text-gray-500">
-                            ¿Aún no tiene una cuenta? <a href="#" className="font-medium text-primary-600 hover:underline">Registrarse</a>
+                            ¿Aún no tiene una cuenta? <Link href="/registro" className="font-medium text-primary-600 hover:underline">Registrarse</Link>
                         </p>
                     </form>
                 </div>

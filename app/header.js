@@ -23,6 +23,7 @@ export default function Header() {
           {isAuthenticated ? (
             <div className="flex items-center space-x-7">
               {localStorage.getItem("rol") == 6 && <Link href="/misprestamos" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mis préstamos</Link>}
+              {localStorage.getItem("rol") == 5 && <Link href="/misolicitud" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mi solicitud</Link>}
               {localStorage.getItem("rol") == 3 && 
                 <>
                   <Link href="/solicitudes" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Solicitudes</Link>

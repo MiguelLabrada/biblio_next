@@ -22,7 +22,7 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
     };
 
     const handleReserveClick = () => {
-        if (isAuthenticated) {
+        if (isAuthenticated && localStorage.getItem("rol") == 6) {
             setReserveConfirmation(true);
         } else {
             onShowAlert('Para poder reservar un libro tiene que estar registrado y autenticado en el sistema.');
@@ -54,7 +54,7 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
     return (
         <div className="flex flex-col items-center">
             <div className="bg-white rounded-xl w-72 h-auto py-4 shadow-md transform transition duration-200 hover:scale-105">             
-                {localStorage.getItem("rol") != 3 &&
+                {(!localStorage.getItem("rol") || localStorage.getItem("rol") == 6) &&
                 <div className="absolute top-2 left-2">
                     <button onClick={handleFavoriteClick}>
                         <FontAwesomeIcon icon={libro.esFavorito ? fasHeart : farHeart} size="lg"/> 
