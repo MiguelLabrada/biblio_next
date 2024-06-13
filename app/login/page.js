@@ -34,7 +34,7 @@ export default function Login() {
             if (!res.ok) {
                 throw new Error(data.error.message);
             }
-            console.log(data);
+            
             const userData = await fetchUserProfile(data.jwt);
     
             setToken(data, userData);

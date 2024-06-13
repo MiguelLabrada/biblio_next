@@ -11,6 +11,10 @@ export default function PopUp ({ show, onClose, message }) {
         router.push('/login');
     };
 
+    const handleRegistro = () => {
+        router.push('/registro');
+    }; 
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="p-4 mb-4 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50" role="alert">
@@ -24,7 +28,8 @@ export default function PopUp ({ show, onClose, message }) {
                     {message}
                 </div>
                 <div className="flex">
-                    <button type="button" className="text-white bg-yellow-800 hover:bg-yellow-900 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center">
+                    <button type="button" className="text-white bg-yellow-800 hover:bg-yellow-900 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center"
+                        onClick={handleRegistro}>
                         Registrarme
                     </button>
                     <button type="button" className="text-white bg-yellow-800 hover:bg-yellow-900 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center"

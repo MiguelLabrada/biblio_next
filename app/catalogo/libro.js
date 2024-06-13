@@ -14,8 +14,10 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
     const { isAuthenticated } = useAuth();
 
     const handleFavoriteClick = () => {
-        if (isAuthenticated) {
+        if (isAuthenticated && localStorage.getItem("rol") == 6) {
             onFavoriteChange(libro.id, libro.esFavorito, libro.favoritoId);
+        } else if (isAuthenticated && localStorage.getItem("rol") == 5) {
+            onShowAlert('Podrá marcar un libro como favorito tras acudir a la biblioteca para que validen sus datos.');
         } else {
             onShowAlert('Para poder marcar un libro como favorito tiene que estar registrado y autenticado en el sistema.');
         }
@@ -24,6 +26,8 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
     const handleReserveClick = () => {
         if (isAuthenticated && localStorage.getItem("rol") == 6) {
             setReserveConfirmation(true);
+        } else if (isAuthenticated && localStorage.getItem("rol") == 5) {
+            onShowAlert('Podrá reservar un libro tras acudir a la biblioteca para que validen sus datos.');
         } else {
             onShowAlert('Para poder reservar un libro tiene que estar registrado y autenticado en el sistema.');
         }
@@ -54,7 +58,7 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
     return (
         <div className="flex flex-col items-center">
             <div className="bg-white rounded-xl w-72 h-auto py-4 shadow-md transform transition duration-200 hover:scale-105">             
-                {(!localStorage.getItem("rol") || localStorage.getItem("rol") == 6) &&
+                {localStorage.getItem("rol") != 3 &&
                 <div className="absolute top-2 left-2">
                     <button onClick={handleFavoriteClick}>
                         <FontAwesomeIcon icon={libro.esFavorito ? fasHeart : farHeart} size="lg"/> 

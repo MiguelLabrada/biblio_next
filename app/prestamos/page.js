@@ -1,7 +1,6 @@
 "use client";
 import { useAuth } from "../AuthContext";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Header from "../header";
 import Prestamo from "./prestamo";
 
@@ -12,7 +11,6 @@ export default function Prestamos() {
     const [ filtroEnPrestamo, setFiltroEnPrestamo ] = useState(false);
     const [ filtroDevueltos, setFiltroDevueltos ] = useState(false);
     const [ prestamos, setPrestamos ] = useState([]);
-    const router = useRouter();
 
     const handleFiltroDevolucionPendiente = () => {
         setFiltroDevolucionPendiente(prev => !prev);    
@@ -31,16 +29,12 @@ export default function Prestamos() {
     };
 
     useEffect(() => {
-        if (isAuthenticated) {
-            fetchPrestamos();
-        } else {
-            router.push("/")
-        }
-    }, [isAuthenticated, router]);
+        fetchPrestamos();
+    }, []);
 
     const fetchPrestamos = () => {
         const jwt = localStorage.getItem('jwt');
-        fetch('http://localhost:1337/api/prestamos?populate=usuario,ejemplar.libro.portada', {
+        fetch('http://localhost:1337/api/prestamos?populate=usuario.role,ejemplar.libro.portada', {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }
@@ -65,6 +59,29 @@ export default function Prestamos() {
         })
         .catch(error => {
             console.error('Error fetching prestamos:', error);
+        });
+    };
+
+    const fetchPrestamo = (id) => {
+        const jwt = localStorage.getItem('jwt');
+        fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const now = new Date();
+            const { estado, fecha_lim_prestamo } = data.data.attributes;
+            const isDevolucionPendiente = estado === "Prestado" && new Date(fecha_lim_prestamo) < now;
+            const isEnPrestamo = estado === "Prestado" && new Date(fecha_lim_prestamo) >= now;
+
+            setPrestamos(prevPrestamos => prevPrestamos.map(prestamo => 
+                prestamo.id === id ? { ...data.data, isDevolucionPendiente, isEnPrestamo } : prestamo
+            ));
+        })
+        .catch(error => {
+            console.error('Error fetching prestamo:', error);
         });
     };
 
@@ -119,6 +136,29 @@ export default function Prestamos() {
         });
     };
 
+    const desbloquear = (userId, id) => {
+        const jwt = localStorage.getItem('jwt');
+        fetch(`http://localhost:1337/api/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${jwt}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                role: 6
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud de renovación');
+            }
+            fetchPrestamo(id);
+        })
+        .catch(error => {
+            console.error('Error updating prestamo:', error);
+        });
+      };
+
     const filteredPrestamos = prestamos.filter(prestamo => {
         return (
             (filtroDevolucionPendiente && prestamo.isDevolucionPendiente) ||
@@ -159,7 +199,7 @@ export default function Prestamos() {
                 <div className="max-w-6xl mx-auto">
                     {filteredPrestamos.map(prestamo => (
                         <Prestamo key={prestamo.id} prestamo={prestamo} 
-                            onEliminar={handleDeletePrestamo} onUpdate={handleUpdatePrestamo} />
+                            onEliminar={handleDeletePrestamo} onUpdate={handleUpdatePrestamo} desbloquear={desbloquear}/>
                     ))}
                 </div>
             </div>

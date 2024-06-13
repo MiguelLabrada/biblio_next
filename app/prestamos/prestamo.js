@@ -1,20 +1,28 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faClock, faBook, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import Confirmation from "./confirmation";
 
-export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
+export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }) {
     const { id, isEnPrestamo, isDevolucionPendiente } = prestamo;
     const { ejemplar, usuario, estado, fecha_devolucion, fecha_prestamo, fecha_lim_reserva, fecha_lim_prestamo } = prestamo.attributes;
     const userId = usuario.data.id;
     const { username } = usuario.data.attributes;
+    const rol = usuario.data.attributes.role.data.id;
     const { libro } = ejemplar.data.attributes;
     const { titulo, portada } = libro.data.attributes;
     const portadaUrl = portada.data.attributes.url;
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [currentAction, setCurrentAction] = useState(null);
     const [currentMessage, setCurrentMessage] = useState('');
+
+    const handleDesbloquear = () => {
+        setCurrentMessage(`¿Desea desbloquear al usuario ${username}?`);
+        setCurrentAction("desbloquear");
+        setShowConfirmation(true);
+    };
 
     const handleButtonClick = (action) => {
         setCurrentMessage(`¿Desea ${action} el préstamo del libro '${titulo}' al usuario '${username}'?`);
@@ -31,7 +39,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
     const acceptConfirmation = () => {
         switch (currentAction) {
             case 'cancelar':
-                handleCancelar();
+                onEliminar(id);
                 break;
             case 'renovar':
                 handleRenovar();
@@ -42,14 +50,13 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
             case 'devolver':
                 handleDevolver();
                 break;
+            case 'desbloquear':
+                desbloquear(userId, id);
+                break;
             default:
                 break;
         }
         cancelConfirmation();
-    };
-
-    const handleCancelar = () => {
-        onEliminar(id);
     };
 
     const handleRenovar = () => {
@@ -93,7 +100,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
             shadow-lg rounded-lg mb-4`}>
             <Image width={100} height={150} src={portadaUrl} alt={titulo} className="mr-4 rounded-lg" />
             <div className="flex flex-col w-96">
-                <p className="text-lg font-medium text-gray-800">{username}</p>
+                <Link href={`/usuarios/${userId}`} className="text-lg font-medium text-blue-500 underline hover:text-blue-700 transition duration-300">{username}</Link>
                 <h2 className="text-2xl font-bold">{titulo}</h2>
                 {isDevolucionPendiente && 
                 <>
@@ -151,12 +158,20 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate }) {
                         </button>
                     </>
                 )}
-                {isDevolucionPendiente && (
+                {isDevolucionPendiente && rol == 6 && (
                     <button 
                         className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-lg shadow-md hover:bg-sky-600 transition duration-300"
                         onClick={() => handleButtonClick('devolver')}
                     >
                         Cambiar a devuelto
+                    </button>
+                )}
+                {isDevolucionPendiente && rol == 4 && (
+                    <button 
+                        className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300"
+                        onClick={() => handleDesbloquear()}
+                    >
+                        Desbloquear
                     </button>
                 )}
             </div>
