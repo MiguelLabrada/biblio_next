@@ -2,15 +2,15 @@
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { useAuth } from '../AuthContext';
-import PopUp from './popup';
+import FormError from '../alerts/form-error';
 import Header from '../header';
 import Link from "next/link";
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPopup, setShowPopup] = useState(false);
-    const [popupMessage, setPopupMessage] = useState('');
+    const [error, showError] = useState(false);
+    const [messageError, setMessageError] = useState('');
     const { setIsAuthenticated } = useAuth();
     const router = useRouter();
 
@@ -72,12 +72,12 @@ export default function Login() {
     };
 
     const handleShowPopup = (message) => {
-        setPopupMessage(message);
-        setShowPopup(true);
+        setMessageError(message);
+        showError(true);
     };
 
     const handleClosePopup = () => {
-        setShowPopup(false);
+        showError(false);
     };
 
     return (
@@ -86,7 +86,7 @@ export default function Login() {
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    {showPopup && <PopUp onClose={handleClosePopup} message={popupMessage} />}
+                    {error && <FormError mensaje={messageError} onClose={handleClosePopup} />}
                     <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                         Iniciar sesión en tu cuenta
                     </h1>

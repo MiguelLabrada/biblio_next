@@ -1,4 +1,4 @@
-export default function PopUp ({ onClose }) {
+export default function Alert ({ mensaje, onClose, children }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -10,9 +10,10 @@ export default function PopUp ({ onClose }) {
                     <h3 className="text-lg font-medium">Acción no autorizada</h3>
                 </div>
                 <div className="mt-2 mb-4 text-sm">
-                    No podrá solicitar la renovación de un préstamo mientras tenga préstamos pendientes de devolver.
+                    {mensaje}
                 </div>
                 <div className="flex">
+                    {children}
                     <button type="button" className="text-yellow-800 bg-transparent border border-yellow-800 hover:bg-yellow-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center" 
                         onClick={onClose} aria-label="Close">
                         Cerrar

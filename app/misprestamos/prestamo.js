@@ -3,7 +3,7 @@ import Image from "next/image";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faClock, faBook, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import Confirmation from "../confirmations/confirmation";
-import PopUp from "./popup";
+import Alert from "../alerts/alert";
 
 export default function Prestamo({ prestamo, solicitar_renovacion }) {
     const { id, attributes, isDevolucionPendiente, isEnPrestamo } = prestamo;
@@ -12,8 +12,6 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
     const { titulo, portada } = libro.data.attributes;
     const portadaUrl = portada.data.attributes.url;
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [tituloConfirmacion, setTituloConfirmacion] = useState('');
-    const [mensajeConfirmacion, setMensajeConfirmacion] = useState('');
     const [showPopup, setShowPopup] = useState(false);
 
     const getEstadoIcon = () => {
@@ -34,8 +32,8 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
         if(localStorage.getItem('rol') == 4){
             setShowPopup(true);
         } else {
-            setTituloConfirmacion('Confirmación de solicitud de renovación');
-            setMensajeConfirmacion(`¿Desea solicitar la renovación del préstamo del libro '${titulo}'?`);
+            setTituloConfirmacion('');
+            setMensajeConfirmacion();
             setShowConfirmation(true);
         }
     };
@@ -99,13 +97,14 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
             </div>
             {showConfirmation && (
                 <Confirmation
-                    titulo={tituloConfirmacion}
-                    mensaje={mensajeConfirmacion}
+                    titulo={'Confirmación de solicitud de renovación'}
+                    mensaje={`¿Desea solicitar la renovación del préstamo del libro '${titulo}'?`}
                     onConfirm={acceptConfirmation}
                     onCancel={cancelConfirmation}
-                />
-            )}
-            {showPopup && <PopUp onClose={handleClosePopup}/>}
+                />)}
+            {showPopup && 
+                <Alert mensaje={'No podrá solicitar la renovación de un préstamo mientras tenga préstamos pendientes de devolver.'} 
+                onClose={handleClosePopup}/>}
         </div>
     );
 }

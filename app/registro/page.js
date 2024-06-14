@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { useRouter } from "next/navigation";
 import Header from "../header";
-import PopUp from "../login/popup";
+import FormError from "../alerts/form-error";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,8 +16,8 @@ export default function Registro() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [showPopup, setShowPopup] = useState(false);
-    const [popupMessage, setPopupMessage] = useState('');
+    const [error, showError] = useState(false);
+    const [messageError, setMessageError] = useState('');
     const { setIsAuthenticated } = useAuth();
     const router = useRouter();
 
@@ -88,12 +88,12 @@ export default function Registro() {
     };
 
     const handleShowPopup = (message) => {
-        setPopupMessage(message);
-        setShowPopup(true);
+        setMessageError(message);
+        showError(true);
     };
 
     const handleClosePopup = () => {
-        setShowPopup(false);
+        showError(false);
     };
     
     return (
@@ -102,7 +102,7 @@ export default function Registro() {
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-2xl xl:p-0">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                {showPopup && <PopUp onClose={handleClosePopup} message={popupMessage} />}
+                {error && <FormError mensaje={messageError} onClose={handleClosePopup} />}
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center">
                   Formulario de registro
                 </h1>
