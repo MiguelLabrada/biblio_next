@@ -4,11 +4,13 @@ import Image from "next/image";
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ReserveConfirmation from "./reserve-confirmation";
-import LoanConfirmation from "./loan-confirmation";
+import Confirmation from "../confirmations/confirmation";
+import LoanConfirmation from "../confirmations/loan-confirmation";
 
 export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBook }) {
     const {portada, titulo, autor, disponibilidad} = libro.attributes;
+    const [tituloConfirmacion, setTituloConfirmacion] = useState('');
+    const [mensajeConfirmacion, setMensajeConfirmacion] = useState('');
     const [reserveConfirmation, setReserveConfirmation] = useState(false);
     const [loanConfirmation, setLoanConfirmation] = useState(false);
     const { isAuthenticated } = useAuth();
@@ -27,6 +29,8 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
 
     const handleReserveClick = () => {
         if (isAuthenticated && localStorage.getItem("rol") == 6) {
+            setTituloConfirmacion('Confirmación de reserva');
+            setMensajeConfirmacion(`¿Desea reservar el libro '${titulo}'?`);
             setReserveConfirmation(true);
         } else if (isAuthenticated && localStorage.getItem("rol") == 5) {
             onShowAlert('Podrá reservar un libro tras acudir a la biblioteca para que validen sus datos.');
@@ -47,6 +51,8 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
     };
     
     const handleLoanClick = () => {
+        setTituloConfirmacion('Confirmación de préstamo');
+        setMensajeConfirmacion(`¿A qué usuario desea prestar el libro '${titulo}'?`);
         setLoanConfirmation(true);
     };
 
@@ -87,15 +93,17 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
                 </div>
             </div>
             {reserveConfirmation && (
-                <ReserveConfirmation
-                    titulo={titulo}
+                <Confirmation
+                    titulo={tituloConfirmacion}
+                    mensaje={mensajeConfirmacion}
                     onConfirm={confirmReserve}
                     onCancel={cancelReserve}
                 />
             )}
             {loanConfirmation && (
                 <LoanConfirmation
-                    titulo={titulo}
+                    titulo={tituloConfirmacion}
+                    mensaje={mensajeConfirmacion}
                     onConfirm={confirmLoan}
                     onCancel={cancelLoan}
                 />

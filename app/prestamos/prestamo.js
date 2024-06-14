@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faClock, faBook, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import Confirmation from "./confirmation";
+import Confirmation from "../confirmations/confirmation";
 
 export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }) {
     const { id, isEnPrestamo, isDevolucionPendiente } = prestamo;
@@ -16,19 +16,23 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
     const portadaUrl = portada.data.attributes.url;
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [currentAction, setCurrentAction] = useState(null);
-    const [currentTitle, setCurrentTitle] = useState('');
-    const [currentMessage, setCurrentMessage] = useState('');
+    const [tituloConfirmacion, setTituloConfirmacion] = useState('');
+    const [mensajeConfirmacion, setMensajeConfirmacion] = useState('');
 
     const handleDesbloquear = () => {
-        setCurrentTitle('Confirmación de desbloqueo');
-        setCurrentMessage(`¿Desea desbloquear al usuario ${username}?`);
+        setTituloConfirmacion('Confirmación de desbloqueo');
+        setMensajeConfirmacion(`¿Desea desbloquear al usuario ${username}?`);
         setCurrentAction("desbloquear");
         setShowConfirmation(true);
     };
 
     const handleButtonClick = (action) => {
-        setCurrentTitle('Confirmación de cambio de estado');
-        setCurrentMessage(`¿Desea ${action} el préstamo del libro '${titulo}' al usuario '${username}'?`);
+        if (action == 'renovar') {
+            setTituloConfirmacion('Confirmación de renovación');
+        } else {
+            setTituloConfirmacion('Confirmación de cambio de estado');
+        }
+        setMensajeConfirmacion(`¿Desea ${action} el préstamo del libro '${titulo}' al usuario '${username}'?`);
         setCurrentAction(action);
         setShowConfirmation(true);
     };
@@ -36,7 +40,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
     const cancelConfirmation = () => {
         setShowConfirmation(false);
         setCurrentAction(null);
-        setCurrentMessage('');
+        setMensajeConfirmacion('');
     };
 
     const acceptConfirmation = () => {
@@ -180,8 +184,8 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
             </div>
             {showConfirmation && (
                 <Confirmation
-                    titulo={currentTitle}
-                    mensaje={currentMessage}
+                    titulo={tituloConfirmacion}
+                    mensaje={mensajeConfirmacion}
                     onConfirm={acceptConfirmation}
                     onCancel={cancelConfirmation}
                 />

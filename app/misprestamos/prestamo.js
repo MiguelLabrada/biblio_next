@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faClock, faBook, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import Confirmation from "../prestamos/confirmation";
+import Confirmation from "../confirmations/confirmation";
 import PopUp from "./popup";
 
 export default function Prestamo({ prestamo, solicitar_renovacion }) {
@@ -12,8 +12,8 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
     const { titulo, portada } = libro.data.attributes;
     const portadaUrl = portada.data.attributes.url;
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [currentTitle, setCurrentTitle] = useState('');
-    const [currentMessage, setCurrentMessage] = useState('');
+    const [tituloConfirmacion, setTituloConfirmacion] = useState('');
+    const [mensajeConfirmacion, setMensajeConfirmacion] = useState('');
     const [showPopup, setShowPopup] = useState(false);
 
     const getEstadoIcon = () => {
@@ -34,8 +34,8 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
         if(localStorage.getItem('rol') == 4){
             setShowPopup(true);
         } else {
-            setCurrentTitle('Confirmación de solicitud de renovación');
-            setCurrentMessage(`¿Desea solicitar la renovación del préstamo del libro '${titulo}'?`);
+            setTituloConfirmacion('Confirmación de solicitud de renovación');
+            setMensajeConfirmacion(`¿Desea solicitar la renovación del préstamo del libro '${titulo}'?`);
             setShowConfirmation(true);
         }
     };
@@ -99,8 +99,8 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
             </div>
             {showConfirmation && (
                 <Confirmation
-                    titulo={currentTitle}
-                    mensaje={currentMessage}
+                    titulo={tituloConfirmacion}
+                    mensaje={mensajeConfirmacion}
                     onConfirm={acceptConfirmation}
                     onCancel={cancelConfirmation}
                 />
