@@ -12,8 +12,6 @@ export default function Catalogo() {
   const [searchTerm, setSearchTerm] = useState('');
   const [authorTerm, setAuthorTerm] = useState('');
   const [generoSeleccionado, setGeneroSeleccionado] = useState('');
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
 
   useEffect(() => {
     fetchLibros();  
@@ -156,15 +154,6 @@ export default function Catalogo() {
     setGeneroSeleccionado(event.target.value);
   };
 
-  const handleShowPopup = (message) => {
-    setPopupMessage(message);
-    setShowPopup(true);
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-
   const handleToggleFavorites = (event) => {
     setShowOnlyFavorites(event.target.checked);
   };
@@ -189,8 +178,7 @@ export default function Catalogo() {
   return (
     <main>
       <Header/>
-      <Listado showPopup={showPopup} handleShowPopup={handleShowPopup} handleClosePopup={handleClosePopup} popupMessage={popupMessage} 
-        generoSeleccionado={generoSeleccionado} handleGenderChange={handleGenderChange}
+      <Listado generoSeleccionado={generoSeleccionado} handleGenderChange={handleGenderChange}
         searchTerm={searchTerm} handleTitleSearch={handleTitleSearch}
         authorTerm={authorTerm} handleAuthorSearch={handleAuthorSearch}
         showOnlyFavorites={showOnlyFavorites} handleToggleFavorites={handleToggleFavorites}

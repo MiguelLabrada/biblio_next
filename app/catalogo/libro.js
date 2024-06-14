@@ -18,6 +18,8 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
             onFavoriteChange(libro.id, libro.esFavorito, libro.favoritoId);
         } else if (isAuthenticated && localStorage.getItem("rol") == 5) {
             onShowAlert('Podrá marcar un libro como favorito tras acudir a la biblioteca para que validen sus datos.');
+        } else if (isAuthenticated && localStorage.getItem("rol") == 4) {
+            onShowAlert('No podrá ver sus libros favoritos ni marcar nuevos mientras tenga préstamos pendientes de devolver.');
         } else {
             onShowAlert('Para poder marcar un libro como favorito tiene que estar registrado y autenticado en el sistema.');
         }
@@ -28,6 +30,8 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange, reserveBoo
             setReserveConfirmation(true);
         } else if (isAuthenticated && localStorage.getItem("rol") == 5) {
             onShowAlert('Podrá reservar un libro tras acudir a la biblioteca para que validen sus datos.');
+        } else if (isAuthenticated && localStorage.getItem("rol") == 4) {
+            onShowAlert('No podrá reservar un libro mientras tenga préstamos pendientes de devolver.');
         } else {
             onShowAlert('Para poder reservar un libro tiene que estar registrado y autenticado en el sistema.');
         }

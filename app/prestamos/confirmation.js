@@ -1,4 +1,4 @@
-export default function Confirmation({ mensaje, onConfirm, onCancel }) {
+export default function Confirmation({ titulo, mensaje, onConfirm, onCancel }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
@@ -15,7 +15,7 @@ export default function Confirmation({ mensaje, onConfirm, onCancel }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                         d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                    <h3 className="text-lg font-semibold text-gray-900">Confirmación de cambio de estado</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">{titulo}</h3>
                     <p className="text-gray-500 my-2">{mensaje}</p>
                     <div className="flex justify-center mt-4">
                         <button onClick={onCancel} className="bg-gray-200 text-gray-700 px-4 py-2 rounded mr-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">Cancelar</button>

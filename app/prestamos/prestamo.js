@@ -16,15 +16,18 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
     const portadaUrl = portada.data.attributes.url;
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [currentAction, setCurrentAction] = useState(null);
+    const [currentTitle, setCurrentTitle] = useState('');
     const [currentMessage, setCurrentMessage] = useState('');
 
     const handleDesbloquear = () => {
+        setCurrentTitle('Confirmación de desbloqueo');
         setCurrentMessage(`¿Desea desbloquear al usuario ${username}?`);
         setCurrentAction("desbloquear");
         setShowConfirmation(true);
     };
 
     const handleButtonClick = (action) => {
+        setCurrentTitle('Confirmación de cambio de estado');
         setCurrentMessage(`¿Desea ${action} el préstamo del libro '${titulo}' al usuario '${username}'?`);
         setCurrentAction(action);
         setShowConfirmation(true);
@@ -177,6 +180,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
             </div>
             {showConfirmation && (
                 <Confirmation
+                    titulo={currentTitle}
                     mensaje={currentMessage}
                     onConfirm={acceptConfirmation}
                     onCancel={cancelConfirmation}

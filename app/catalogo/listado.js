@@ -1,12 +1,14 @@
 import { useAuth } from "../AuthContext";
+import { useState } from "react";
 import Libro from "./libro";
 import PopUp from './popup';
 
-export default function Listado ({showPopup, handleShowPopup, handleClosePopup, popupMessage, 
-    generoSeleccionado, handleGenderChange, searchTerm, handleTitleSearch,
+export default function Listado ({generoSeleccionado, handleGenderChange, searchTerm, handleTitleSearch,
     authorTerm, handleAuthorSearch, showOnlyFavorites, handleToggleFavorites,
     librosConFavorito, handleFavoriteChange, reserveBook}) {
     const { isAuthenticated } = useAuth();
+    const [showPopup, setShowPopup] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
 
     const generos = [
         'Fantasía', 
@@ -21,9 +23,18 @@ export default function Listado ({showPopup, handleShowPopup, handleClosePopup, 
         'Manga'
     ];
 
+    const handleShowPopup = (message) => {
+        setPopupMessage(message);
+        setShowPopup(true);
+    };
+    
+    const handleClosePopup = () => {
+        setShowPopup(false);
+    };
+
     return (
         <div>
-            <PopUp show={showPopup} onClose={handleClosePopup} message={popupMessage} />
+            {showPopup && <PopUp onClose={handleClosePopup} message={popupMessage} />}            
             <div className="bg-[#D6DBDC] text-center fixed top-14 w-full z-10 py-4">
                 <h1 className="text-4xl font-bold">Catálogo</h1>
             </div>

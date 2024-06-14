@@ -1,15 +1,20 @@
+import { useState } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faClock, faBook, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import Confirmation from "../prestamos/confirmation";
+import PopUp from "./popup";
 
-export default function Prestamo({ prestamo }) {
+export default function Prestamo({ prestamo, solicitar_renovacion }) {
     const { id, attributes, isDevolucionPendiente, isEnPrestamo } = prestamo;
     const { estado, fecha_lim_reserva, fecha_prestamo, fecha_lim_prestamo, fecha_devolucion, ejemplar, renovacion_solicitada } = attributes;
     const { libro } = ejemplar.data.attributes;
     const { titulo, portada } = libro.data.attributes;
     const portadaUrl = portada.data.attributes.url;
-    const [renovacionSolicitada, setRenovacionSolicitada] = useState(renovacion_solicitada);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [currentTitle, setCurrentTitle] = useState('');
+    const [currentMessage, setCurrentMessage] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
 
     const getEstadoIcon = () => {
         if (estado === "Reservado") return <FontAwesomeIcon icon={faClock} className="text-orange-400" />;
@@ -26,28 +31,26 @@ export default function Prestamo({ prestamo }) {
     };
 
     const handleRenovacion = () => {
-        const jwt = localStorage.getItem('jwt');
-        fetch(`http://localhost:1337/api/prestamos/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${jwt}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                data: {
-                    renovacion_solicitada: true
-                }
-            }),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la solicitud de renovación');
-            }
-            setRenovacionSolicitada(true);
-        })
-        .catch(error => {
-            console.error('Error en la solicitud de renovación:', error);
-        });
+        if(localStorage.getItem('rol') == 4){
+            setShowPopup(true);
+        } else {
+            setCurrentTitle('Confirmación de solicitud de renovación');
+            setCurrentMessage(`¿Desea solicitar la renovación del préstamo del libro '${titulo}'?`);
+            setShowConfirmation(true);
+        }
+    };
+
+    const cancelConfirmation = () => {
+        setShowConfirmation(false);
+    };
+
+    const acceptConfirmation = () => {
+        solicitar_renovacion(id);
+        cancelConfirmation();
+    };
+
+    const handleClosePopup = () => {
+        setShowPopup(false);
     };
 
     return (
@@ -82,7 +85,7 @@ export default function Prestamo({ prestamo }) {
                     {getEstadoIcon()}
                     <span className="ml-2 text-lg font-semibold">{getEstadoText()}</span>
                 </div>
-                {isEnPrestamo && !renovacionSolicitada && 
+                {isEnPrestamo && !renovacion_solicitada && 
                     <button 
                         onClick={handleRenovacion} 
                         className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300"
@@ -90,10 +93,19 @@ export default function Prestamo({ prestamo }) {
                         Solicitar renovación
                     </button>
                 }
-                {isEnPrestamo && renovacionSolicitada && 
+                {isEnPrestamo && renovacion_solicitada && 
                     <span className="ml-2 text-lg font-semibold">Renovación solicitada</span>
                 }
             </div>
+            {showConfirmation && (
+                <Confirmation
+                    titulo={currentTitle}
+                    mensaje={currentMessage}
+                    onConfirm={acceptConfirmation}
+                    onCancel={cancelConfirmation}
+                />
+            )}
+            {showPopup && <PopUp onClose={handleClosePopup}/>}
         </div>
     );
 }
