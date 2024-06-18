@@ -32,8 +32,6 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
         if(localStorage.getItem('rol') == 4){
             setShowPopup(true);
         } else {
-            setTituloConfirmacion('');
-            setMensajeConfirmacion();
             setShowConfirmation(true);
         }
     };

@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contextos/AuthContext";
 import Alert from "./alert";
 
 export default function FavReserveAlert ({ mensaje, onClose }) {
@@ -7,18 +7,22 @@ export default function FavReserveAlert ({ mensaje, onClose }) {
     const router = useRouter();
 
     const handleLogin = () => {
+        onClose();
         router.push('/login');
     };
 
     const handleRegistro = () => {
+        onClose();
         router.push('/registro');
     }; 
 
     const handleMiSolicitud = () => {
+        onClose();
         router.push('/misolicitud');
     }; 
 
     const handleMisPrestamos = () => {
+        onClose();
         router.push('/misprestamos');
     }; 
 

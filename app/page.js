@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Listado from './catalogo/listado';
 import Header from './header';
-import { useAuth } from './AuthContext';
+import { useAuth } from './contextos/AuthContext';
 
 export default function Catalogo() {
   const { isAuthenticated } = useAuth();
@@ -104,44 +104,6 @@ export default function Catalogo() {
     }
   };
 
-  const reserveBook = (id, username) => {
-    const jwt = localStorage.getItem('jwt');
-    if(localStorage.getItem("rol") == 6){
-      username = localStorage.getItem("username");
-    }
-    fetch('http://localhost:1337/api/prestamos', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwt}`
-      },
-      body: JSON.stringify({
-        data: {
-          ejemplar: id,
-          usuario: username
-        }
-      })
-    })
-    .then(response => {
-      if (response.ok) {
-        setLibros(prevLibros => prevLibros.map(libro => 
-          libro.id === id ? {
-            ...libro,
-            attributes: {
-              ...libro.attributes,
-              disponibilidad: libro.attributes.disponibilidad - 1
-            }
-          } : libro
-        ));
-      } else {
-        console.error('Error reservando el libro.');
-      }
-    })
-    .catch(error => {
-      console.error('Error reservando el libro:', error);
-    });
-  };
-
   const handleTitleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -182,8 +144,7 @@ export default function Catalogo() {
         searchTerm={searchTerm} handleTitleSearch={handleTitleSearch}
         authorTerm={authorTerm} handleAuthorSearch={handleAuthorSearch}
         showOnlyFavorites={showOnlyFavorites} handleToggleFavorites={handleToggleFavorites}
-        librosConFavorito={librosConFavorito} handleFavoriteChange={handleFavoriteChange} 
-        reserveBook={reserveBook}/>
+        librosConFavorito={librosConFavorito} handleFavoriteChange={handleFavoriteChange}/>
     </main>
   );
 }

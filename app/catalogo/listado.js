@@ -1,14 +1,17 @@
-import { useAuth } from "../AuthContext";
-import { useState } from "react";
+import { useAuth } from "../contextos/AuthContext";
+import { useAlert } from "../contextos/AlertContext";
+import { useConfirmation } from "../contextos/ConfirmationContext";
 import Libro from "./libro";
 import FavReserveAlert from '../alerts/fav-reserve-alert';
+import ReserveConfirmation from "../confirmations/reserve-confirmation";
+import LoanConfirmation from '../confirmations/loan-confirmation';
 
 export default function Listado ({generoSeleccionado, handleGenderChange, searchTerm, handleTitleSearch,
     authorTerm, handleAuthorSearch, showOnlyFavorites, handleToggleFavorites,
-    librosConFavorito, handleFavoriteChange, reserveBook}) {
+    librosConFavorito, handleFavoriteChange}) {
     const { isAuthenticated } = useAuth();
-    const [showPopup, setShowPopup] = useState(false);
-    const [popupMessage, setPopupMessage] = useState('');
+    const { alert, showAlert, closeAlert } = useAlert();
+    const { confirmation } = useConfirmation();
 
     const generos = [
         'Fantasía', 
@@ -23,18 +26,15 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
         'Manga'
     ];
 
-    const handleShowPopup = (message) => {
-        setPopupMessage(message);
-        setShowPopup(true);
-    };
-    
-    const handleClosePopup = () => {
-        setShowPopup(false);
-    };
-
     return (
         <div>
-            {showPopup && <FavReserveAlert mensaje={popupMessage} onClose={handleClosePopup} />}
+            {alert.show && <FavReserveAlert mensaje={alert.message} onClose={closeAlert} />}
+            {confirmation.showReserveConfirmation && (
+                <ReserveConfirmation/>
+            )}
+            {confirmation.showLoanConfirmation && (
+                <LoanConfirmation/>
+            )}
             <div className="bg-[#D6DBDC] text-center fixed top-14 w-full z-10 py-4">
                 <h1 className="text-4xl font-bold">Catálogo</h1>
             </div>
@@ -84,9 +84,8 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
                         <Libro 
                             key={libro.id} 
                             libro={libro} 
-                            onShowAlert={handleShowPopup}  
+                            onShowAlert={showAlert}  
                             onFavoriteChange={handleFavoriteChange}
-                            reserveBook={reserveBook}
                         />
                     ))}
             </div>

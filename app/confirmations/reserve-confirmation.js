@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Confirmation from "./confirmation";
 import { useConfirmation } from "../contextos/ConfirmationContext";
 
-export default function LoanConfirmation() {
-    const [username, setUsername] = useState('');
+export default function ReserveConfirmation() {
     const { confirmation, closeConfirmation } = useConfirmation();
-
-    const loanBook = () => {
+    const router = useRouter();
+    
+    const reserveBook = () => {
         const jwt = localStorage.getItem('jwt');
         fetch('http://localhost:1337/api/prestamos', {
           method: 'POST',
@@ -17,13 +17,13 @@ export default function LoanConfirmation() {
           body: JSON.stringify({
             data: {
               ejemplar: confirmation.id,
-              usuario: username
+              usuario: localStorage.getItem("username")
             }
           })
         })
         .then(response => {
           if (response.ok) {
-            router.push('/prestamos');
+            router.push('/misprestamos');
           } else {
             console.error('Error reservando el libro.');
           }
@@ -32,21 +32,13 @@ export default function LoanConfirmation() {
           console.error('Error reservando el libro:', error);
         });
     };
-    
+
     return (
         <Confirmation
             titulo={confirmation.title}
             mensaje={confirmation.message}
-            onConfirm={loanBook}
+            onConfirm={reserveBook}
             onCancel={closeConfirmation}
-        >
-            <input 
-                type="text"
-                placeholder="Nombre de usuario"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-        </Confirmation>
+        />
     );
 }

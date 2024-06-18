@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../contextos/AuthContext';
 import FormError from '../alerts/form-error';
 import Header from '../header';
 import Link from "next/link";

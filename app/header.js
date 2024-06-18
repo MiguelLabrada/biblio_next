@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useAuth } from './AuthContext';
+import { useAuth } from './contextos/AuthContext';
 
 export default function Header() {
   const { isAuthenticated, setIsAuthenticated } = useAuth();
@@ -8,6 +8,7 @@ export default function Header() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('id');
     localStorage.removeItem('rol');
+    localStorage.removeItem('username');
 
     setIsAuthenticated(false);
   };

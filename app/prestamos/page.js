@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contextos/AuthContext";
 import { useState, useEffect } from "react";
 import Header from "../header";
 import Prestamo from "./prestamo";
