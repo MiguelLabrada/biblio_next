@@ -3,7 +3,7 @@ import Link from "next/link";
 import ReserveButton from "../comunes/reserve-button";
 import FavButton from "../comunes/fav-button";
 
-export default function Libro ({libro, onShowAlert, onFavoriteChange }) {
+export default function Libro ({libro, onFavoriteChange }) {
     const {portada, titulo, autor, disponibilidad} = libro.attributes;
 
     return (
@@ -11,7 +11,7 @@ export default function Libro ({libro, onShowAlert, onFavoriteChange }) {
             <div className="bg-white rounded-xl w-72 h-auto py-4 shadow-md transform transition duration-200 hover:scale-105">             
                 {localStorage.getItem("rol") != 3 &&
                 <div className="absolute top-2 left-2">
-                    <FavButton size="lg" libro={libro} onShowAlert={onShowAlert} onFavoriteChange={onFavoriteChange}/>
+                    <FavButton size="lg" libro={libro} onFavoriteChange={onFavoriteChange}/>
                 </div>
                 }
                 <div className="flex justify-center">

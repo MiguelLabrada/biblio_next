@@ -53,54 +53,14 @@ export default function Catalogo() {
     });
   };
 
-  const handleFavoriteChange = (libroId, esFavorito, favoritoId) => {
-    const jwt = localStorage.getItem('jwt');
-    if (esFavorito) {
-      fetch(`http://localhost:1337/api/favoritos/${favoritoId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${jwt}`
-        }
-      })
-      .then(response => {
-        if (response.ok) {
-            setFavoritos(favoritos.filter(fav => fav.libroId !== libroId));
-        } else {
-            console.error('Error eliminando el libro de favoritos');
-        }
-      })
-      .catch(error => {
-        console.error('Error eliminando favorito:', error);
-      });
+  const handleFavoriteChange = (libroId, favoritoId) => {
+    if (favoritoId) {
+      setFavoritos([...favoritos, {
+        libroId: libroId,
+        favoritoId: favoritoId
+      }]);
     } else {
-      const userId = localStorage.getItem('id');
-      fetch('http://localhost:1337/api/favoritos', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
-        body: JSON.stringify({
-            data: {
-                libro: libroId,
-                usuario: userId
-            }
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.data) {
-            setFavoritos([...favoritos, {
-                libroId: libroId,
-                favoritoId: data.data.id
-            }]);
-        } else {
-            console.error('Error marcando como favorito');
-        }
-      })
-      .catch(error => {
-          console.error('Error marcando como favorito:', error);
-      });
+      setFavoritos(favoritos.filter(fav => fav.libroId !== libroId));
     }
   };
 

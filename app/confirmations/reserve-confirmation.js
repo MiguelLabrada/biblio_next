@@ -23,6 +23,7 @@ export default function ReserveConfirmation() {
         })
         .then(response => {
           if (response.ok) {
+            closeConfirmation();
             router.push('/misprestamos');
           } else {
             console.error('Error reservando el libro.');

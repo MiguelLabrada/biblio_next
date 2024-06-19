@@ -10,7 +10,7 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
     authorTerm, handleAuthorSearch, showOnlyFavorites, handleToggleFavorites,
     librosConFavorito, handleFavoriteChange}) {
     const { isAuthenticated } = useAuth();
-    const { alert, showAlert, closeAlert } = useAlert();
+    const { alert, closeAlert } = useAlert();
     const { confirmation } = useConfirmation();
 
     const generos = [
@@ -84,7 +84,6 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
                         <Libro 
                             key={libro.id} 
                             libro={libro} 
-                            onShowAlert={showAlert}  
                             onFavoriteChange={handleFavoriteChange}
                         />
                     ))}

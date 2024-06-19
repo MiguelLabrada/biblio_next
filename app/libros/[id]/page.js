@@ -1,32 +1,58 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useAlert } from '@/app/contextos/AlertContext';
+import { useConfirmation } from '@/app/contextos/ConfirmationContext';
 import Image from 'next/image';
 import Header from '@/app/header';
 import ReserveButton from '@/app/comunes/reserve-button';
 import FavButton from '@/app/comunes/fav-button';
+import ReserveConfirmation from '@/app/confirmations/reserve-confirmation';
+import LoanConfirmation from '@/app/confirmations/loan-confirmation';
 import FavReserveAlert from '@/app/alerts/fav-reserve-alert';
 
 export default function LibroDetalle({ params: { id } }) {
     const [libro, setLibro] = useState(null);
     const [loading, setLoading] = useState(true);
     const { alert, closeAlert } = useAlert();
+    const { confirmation } = useConfirmation();
+
+    const fetchLibro = async () => {
+        try {
+            const libroResponse = await fetch(`http://localhost:1337/api/libros/${id}?populate=*`);
+            const libroData = await libroResponse.json();
+            const libro = libroData.data;
+
+            if (localStorage.getItem("rol") == 6) {
+                const jwt = localStorage.getItem('jwt');
+                const favoritosResponse = await fetch('http://localhost:1337/api/favoritos', {
+                    headers: {
+                        'Authorization': `Bearer ${jwt}`
+                    }
+                });
+                const favoritosData = await favoritosResponse.json();
+
+                const esFavorito = favoritosData.data.some(favorito => favorito.attributes.libro.data.id === libro.id);
+                const favorito = favoritosData.data.find(favorito => favorito.attributes.libro.data.id === libro.id);
+
+                setLibro({
+                    ...libro,
+                    esFavorito: esFavorito,
+                    favoritoId: favorito ? favorito.id : null
+                });
+            }
+
+            setLibro(libro);
+
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching book or favorites details:", error);
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
-        const fetchLibro = async () => {
-            try {
-                const response = await fetch(`http://localhost:1337/api/libros/${id}?populate=*`);
-                const data = await response.json();
-                setLibro(data.data);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching book details:", error);
-                setLoading(false);
-            }
-        };
-
         fetchLibro();
-    }, [id]);
+    }, []);
 
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
@@ -40,10 +66,17 @@ export default function LibroDetalle({ params: { id } }) {
             <Header />
             <div className="min-h-screen bg-gray-100 flex items-center justify-center">
                 {alert.show && <FavReserveAlert mensaje={alert.message} onClose={closeAlert} />}
+                {confirmation.showReserveConfirmation && (
+                    <ReserveConfirmation/>
+                )}
+                {confirmation.showLoanConfirmation && (
+                    <LoanConfirmation/>
+                )}
                 <div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-6xl md:flex relative">
+                    {localStorage.getItem("rol") != 3 &&
                     <div className="absolute top-2 right-2 mt-2 mr-2">
                         <FavButton size="2xl" libro={libro}/>
-                    </div>
+                    </div>}
                     <div className="md:w-1/3 p-4">
                         <Image
                             src={portadaUrl}

@@ -29,10 +29,12 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
     const handleButtonClick = (action) => {
         if (action == 'renovar') {
             setTituloConfirmacion('Confirmación de renovación');
+        } else if (action == 'cancelar') {
+            setTituloConfirmacion('Confirmación de cancelación');
         } else {
             setTituloConfirmacion('Confirmación de cambio de estado');
         }
-        setMensajeConfirmacion(`¿Desea ${action} el préstamo del libro '${titulo}' al usuario '${username}'?`);
+        setMensajeConfirmacion(`¿Desea ${action} el préstamo de '${titulo}' al usuario '${username}'?`);
         setCurrentAction(action);
         setShowConfirmation(true);
     };

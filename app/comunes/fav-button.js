@@ -1,26 +1,97 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from "../contextos/AuthContext";
+import { useAlert } from '../contextos/AlertContext';
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function FavButton({size, libro, onShowAlert, onFavoriteChange}) {
+export default function FavButton({size, libro, onFavoriteChange}) {
     const { isAuthenticated } = useAuth();
+    const { showAlert } = useAlert();
+    const [esFavorito, setEsFavorito] = useState(libro.esFavorito);
+
+    useEffect(() => {
+      setEsFavorito(libro.esFavorito);
+    }, [libro.esFavorito]);
+
+    const deleteFavorito = (favoritoId, libroId) => {
+        const jwt = localStorage.getItem('jwt');
+        fetch(`http://localhost:1337/api/favoritos/${favoritoId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${jwt}`
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            setEsFavorito(false);
+            if (onFavoriteChange) {
+              onFavoriteChange(libroId);
+            }
+          } else {
+              console.error('Error eliminando el libro de favoritos');
+          }
+        })
+        .catch(error => {
+          console.error('Error eliminando favorito:', error);
+        });
+    };
+    
+    const createFavorito = (libroId) => {
+        const jwt = localStorage.getItem('jwt');
+        const userId = localStorage.getItem('id');
+        fetch('http://localhost:1337/api/favoritos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+          },
+          body: JSON.stringify({
+            data: {
+                libro: libroId,
+                usuario: userId
+            }
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.data) {
+            setEsFavorito(true);
+            if (onFavoriteChange) {
+              onFavoriteChange(libroId, data.data.id);
+            }
+          } else {
+            console.error('Error marcando como favorito');
+          }
+        })
+        .catch(error => {
+          console.error('Error marcando como favorito:', error);
+        });
+    };
+
+    const handleFavoriteChange = (libroId, esFavorito, favoritoId) => {
+        if (esFavorito) {
+          deleteFavorito(favoritoId, libroId);
+        } else {
+          createFavorito(libroId);
+        }
+      };
 
     const handleFavoriteClick = () => {
         if (isAuthenticated && localStorage.getItem("rol") == 6) {
-            onFavoriteChange(libro.id, libro.esFavorito, libro.favoritoId);
+          handleFavoriteChange(libro.id, esFavorito, libro.favoritoId);
         } else if (isAuthenticated && localStorage.getItem("rol") == 5) {
-            onShowAlert('Podrá marcar un libro como favorito tras acudir a la biblioteca para que validen sus datos.');
+          showAlert('Podrá marcar un libro como favorito tras acudir a la biblioteca para que validen sus datos.');
         } else if (isAuthenticated && localStorage.getItem("rol") == 4) {
-            onShowAlert('No podrá ver sus libros favoritos ni marcar nuevos mientras tenga préstamos pendientes de devolver.');
+          showAlert('No podrá ver sus libros favoritos ni marcar nuevos mientras tenga préstamos pendientes de devolver.');
         } else {
-            onShowAlert('Para poder marcar un libro como favorito tiene que estar registrado y autenticado en el sistema.');
+          showAlert('Para poder marcar un libro como favorito tiene que estar registrado y autenticado en el sistema.');
         }
     };
 
     return (
         <button onClick={handleFavoriteClick}>
-            <FontAwesomeIcon icon={libro.esFavorito ? fasHeart : farHeart} size={size} />
+          <FontAwesomeIcon icon={esFavorito ? fasHeart : farHeart} size={size} />
         </button>
     );
 }

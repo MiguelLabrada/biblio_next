@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Confirmation from "./confirmation";
 import { useConfirmation } from "../contextos/ConfirmationContext";
@@ -5,6 +6,7 @@ import { useConfirmation } from "../contextos/ConfirmationContext";
 export default function LoanConfirmation() {
     const [username, setUsername] = useState('');
     const { confirmation, closeConfirmation } = useConfirmation();
+    const router = useRouter();
 
     const loanBook = () => {
         const jwt = localStorage.getItem('jwt');
@@ -23,13 +25,14 @@ export default function LoanConfirmation() {
         })
         .then(response => {
           if (response.ok) {
+            closeConfirmation();
             router.push('/prestamos');
           } else {
-            console.error('Error reservando el libro.');
+            console.error('Error prestando el libro.');
           }
         })
         .catch(error => {
-          console.error('Error reservando el libro:', error);
+          console.error('Error prestando el libro:', error);
         });
     };
     

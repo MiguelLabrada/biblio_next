@@ -96,7 +96,7 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
             {showConfirmation && (
                 <Confirmation
                     titulo={'Confirmación de solicitud de renovación'}
-                    mensaje={`¿Desea solicitar la renovación del préstamo del libro '${titulo}'?`}
+                    mensaje={`¿Desea solicitar la renovación del préstamo de '${titulo}'?`}
                     onConfirm={acceptConfirmation}
                     onCancel={cancelConfirmation}
                 />)}
