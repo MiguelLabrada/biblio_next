@@ -5,7 +5,6 @@ import Header from "../header";
 import Prestamo from "./prestamo";
 
 export default function Prestamos() {
-    const { isAuthenticated } = useAuth();
     const [ filtroDevolucionPendiente, setFiltroDevolucionPendiente ] = useState(false);
     const [ filtroRecogidaPendiente, setFiltroRecogidaPendiente ] = useState(false);
     const [ filtroEnPrestamo, setFiltroEnPrestamo ] = useState(false);

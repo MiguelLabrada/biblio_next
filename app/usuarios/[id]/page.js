@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Header from "@/app/header";
+import Confirmation from "@/app/confirmations/confirmation";
 
 export default function Usuario({ params: { id } }) {
     const [fullName, setFullName] = useState('');
@@ -14,6 +15,9 @@ export default function Usuario({ params: { id } }) {
     const [email, setEmail] = useState('');
     const [rol, setRol] = useState('');
     const [devolucionesPendientes, setDevolucionesPendientes] = useState('');
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [tituloConfirmacion, setTituloConfirmacion] = useState('');
+    const [mensajeConfirmacion, setMensajeConfirmacion] = useState('');
     const router = useRouter();
 
     useEffect(() => {
@@ -48,9 +52,20 @@ export default function Usuario({ params: { id } }) {
       }
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
       e.preventDefault();
 
+      if(rol == 4){
+        setTituloConfirmacion('Confirmación de desbloqueo');
+        setMensajeConfirmacion(`¿Desea desbloquear al usuario ${username}?`);
+      } else {
+        setTituloConfirmacion('Confirmación de bloqueo');
+        setMensajeConfirmacion(`¿Desea bloquear al usuario ${username}?`);
+      }
+      setShowConfirmation(true);
+    };
+
+    const acceptConfirmation = async () => {
       let newRol = 4;
       if(rol == 4){
         newRol = 6;
@@ -80,6 +95,12 @@ export default function Usuario({ params: { id } }) {
       } catch (error) {
         console.log(error.message);
       }
+    };
+
+    const cancelConfirmation = () => {
+      setShowConfirmation(false);
+      setTituloConfirmacion('');
+      setMensajeConfirmacion('');
     };
 
     return (
@@ -151,6 +172,14 @@ export default function Usuario({ params: { id } }) {
               </div>
             </div>
           </div>
+          {showConfirmation && (
+                <Confirmation
+                    titulo={tituloConfirmacion}
+                    mensaje={mensajeConfirmacion}
+                    onConfirm={acceptConfirmation}
+                    onCancel={cancelConfirmation}
+                />
+            )}
         </section>
     );
 }
