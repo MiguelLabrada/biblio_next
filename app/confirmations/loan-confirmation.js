@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { useAuth } from "../contextos/AuthContext";
 import { useState } from "react";
 import Confirmation from "./confirmation";
 import { useConfirmation } from "../contextos/ConfirmationContext";
@@ -6,10 +7,11 @@ import { useConfirmation } from "../contextos/ConfirmationContext";
 export default function LoanConfirmation() {
     const [username, setUsername] = useState('');
     const { confirmation, closeConfirmation } = useConfirmation();
+    const { authData } = useAuth();
     const router = useRouter();
 
     const loanBook = () => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch('http://localhost:1337/api/prestamos', {
           method: 'POST',
           headers: {

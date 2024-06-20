@@ -4,18 +4,18 @@ import { useConfirmation } from '../contextos/ConfirmationContext';
 
 export default function ReserveButton({ libro }) {
     const { titulo, disponibilidad } = libro.attributes;
-    const { isAuthenticated } = useAuth();
+    const { authData } = useAuth();
     const { showAlert } = useAlert();
     const { showReserveConfirmation, showLoanConfirmation } = useConfirmation();
 
     const handleReserveClick = () => {
-        if (isAuthenticated && localStorage.getItem("rol") == 6) {
+        if (authData.isAuthenticated && authData.role == 6) {
             showReserveConfirmation(libro.id, 'Confirmación de reserva', `¿Desea reservar el libro '${titulo}'?`);
-        } else if (isAuthenticated && localStorage.getItem("rol") == 3) {
+        } else if (authData.isAuthenticated && authData.role == 3) {
             showLoanConfirmation(libro.id, 'Confirmación de préstamo', `¿A qué usuario desea prestar el libro '${titulo}'?`);
-        } else if (isAuthenticated && localStorage.getItem("rol") == 5) {
+        } else if (authData.isAuthenticated && authData.role == 5) {
             showAlert('Podrá reservar un libro tras acudir a la biblioteca para que validen sus datos.');
-        } else if (isAuthenticated && localStorage.getItem("rol") == 4) {
+        } else if (authData.isAuthenticated && authData.role == 4) {
             showAlert('No podrá reservar un libro mientras tenga préstamos pendientes de devolver.');
         } else {
             showAlert('Para poder reservar un libro tiene que estar registrado y autenticado en el sistema.');
@@ -28,7 +28,7 @@ export default function ReserveButton({ libro }) {
                 onClick={handleReserveClick}
                 disabled={disponibilidad === 0}
             >
-                {localStorage.getItem("rol") != 3 ? 'RESERVAR' : 'PRESTAR' }
+                {authData.role != 3 ? 'RESERVAR' : 'PRESTAR' }
             </button>
         </>
     );

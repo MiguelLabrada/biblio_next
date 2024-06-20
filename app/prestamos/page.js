@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useAuth } from '@/app/contextos/AuthContext';
 import Header from "../header";
 import Prestamo from "./prestamo";
 
@@ -11,6 +12,7 @@ export default function Prestamos() {
     const [ prestamos, setPrestamos ] = useState([]);
     const [ busquedaUser, setBusquedaUser ] = useState("");
     const [ busquedaLibro, setBusquedaLibro ] = useState("");
+    const { authData } = useAuth();
 
     const handleFiltroDevolucionPendiente = () => {
         setFiltroDevolucionPendiente(prev => !prev);    
@@ -41,7 +43,7 @@ export default function Prestamos() {
     }, []);
 
     const fetchPrestamos = () => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch('http://localhost:1337/api/prestamos?populate=usuario.role,ejemplar.libro.portada', {
             headers: {
                 'Authorization': `Bearer ${jwt}`
@@ -71,7 +73,7 @@ export default function Prestamos() {
     };
 
     const fetchPrestamo = (id) => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
@@ -94,7 +96,7 @@ export default function Prestamos() {
     };
 
     const handleUpdatePrestamo = (id, newEstado, updateData) => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario,ejemplar.libro.portada`, {
             method: 'PUT',
             headers: {
@@ -125,7 +127,7 @@ export default function Prestamos() {
     };
 
     const handleDeletePrestamo = (id) => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch(`http://localhost:1337/api/prestamos/${id}`, {
             method: 'DELETE',
             headers: {
@@ -145,7 +147,7 @@ export default function Prestamos() {
     };
 
     const desbloquear = (userId, id) => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch(`http://localhost:1337/api/users/${userId}`, {
             method: 'PUT',
             headers: {

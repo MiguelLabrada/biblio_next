@@ -1,13 +1,15 @@
 import { useRouter } from "next/navigation";
+import { useAuth } from "../contextos/AuthContext";
 import Confirmation from "./confirmation";
 import { useConfirmation } from "../contextos/ConfirmationContext";
 
 export default function ReserveConfirmation() {
     const { confirmation, closeConfirmation } = useConfirmation();
     const router = useRouter();
+    const { authData } = useAuth();
     
     const reserveBook = () => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch('http://localhost:1337/api/prestamos', {
           method: 'POST',
           headers: {
@@ -17,7 +19,7 @@ export default function ReserveConfirmation() {
           body: JSON.stringify({
             data: {
               ejemplar: confirmation.id,
-              usuario: localStorage.getItem("username")
+              usuario: authData.username
             }
           })
         })

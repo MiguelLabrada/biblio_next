@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useAuth } from '@/app/contextos/AuthContext';
 import { useRouter } from "next/navigation";
 import Header from '../header';
 import FormError from '../alerts/form-error';
@@ -19,13 +20,14 @@ export default function MiSolicitud() {
     const [error, showError] = useState(false);
     const [messageError, setMessageError] = useState('');
     const router = useRouter();
+    const { authData } = useAuth();
 
     useEffect(() => {
         fetchUserData();
     }, []);
 
     const fetchUserData = async () => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         try {
             const response = await fetch('http://localhost:1337/api/users/me?populate=*', {
                 headers: {
@@ -59,8 +61,8 @@ export default function MiSolicitud() {
         }
 
         try {
-            const jwt = localStorage.getItem('jwt');
-            const id = localStorage.getItem('id');
+            const jwt = authData.jwt;
+            const id = authData.id;
 
             const userData = {
                 username: username,

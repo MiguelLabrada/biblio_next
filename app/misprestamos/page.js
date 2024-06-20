@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useAuth } from '@/app/contextos/AuthContext';
 import Header from "../header";
 import Prestamo from "./prestamo";
 
@@ -9,6 +10,7 @@ export default function MisPrestamos() {
     const [ filtroEnPrestamo, setFiltroEnPrestamo ] = useState(false);
     const [ filtroDevueltos, setFiltroDevueltos ] = useState(false);
     const [ prestamos, setPrestamos ] = useState([]);
+    const { authData } = useAuth();
 
     const handleFiltroDevolucionPendiente = () => {
         setFiltroDevolucionPendiente(prev => !prev);    
@@ -31,7 +33,7 @@ export default function MisPrestamos() {
     }, []);
 
     const fetchPrestamos = () => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch('http://localhost:1337/api/prestamos?populate=usuario.role,ejemplar.libro.portada', {
             headers: {
                 'Authorization': `Bearer ${jwt}`
@@ -61,7 +63,7 @@ export default function MisPrestamos() {
     };
 
     const solicitar_renovacion = (id) => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
             method: 'PUT',
             headers: {
@@ -126,7 +128,7 @@ export default function MisPrestamos() {
                     </button>
                 </div>
             </div>
-            <div className="bg-[#D6DBDC] mt-48 pt-10 pb-4">
+            <div className="bg-[#D6DBDC] h-screen mt-48 pt-10 pb-4">
                 <div className="max-w-6xl mx-auto">
                     {filteredPrestamos.map(prestamo => (
                         <Prestamo key={prestamo.id} prestamo={prestamo} solicitar_renovacion={solicitar_renovacion} />

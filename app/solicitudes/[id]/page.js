@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from '@/app/contextos/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Header from "@/app/header";
@@ -18,13 +19,14 @@ export default function Solicitud({ params: { id } }) {
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState('');
     const [confirmationAction, setConfirmationAction] = useState(null);
     const router = useRouter();
+    const { authData } = useAuth();
 
     useEffect(() => {
         fetchUserData();
     }, []);
 
     const fetchUserData = async () => {
-      const jwt = localStorage.getItem('jwt');
+      const jwt = authData.jwt;
       try {
         const response = await fetch(`http://localhost:1337/api/users/${id}?populate=*`, {
           headers: {
@@ -66,7 +68,7 @@ export default function Solicitud({ params: { id } }) {
     };
 
     const acceptConfirmation = async () => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         try {
             let response;
             if (confirmationAction === 'validate') {

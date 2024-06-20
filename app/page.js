@@ -5,7 +5,7 @@ import Header from './header';
 import { useAuth } from './contextos/AuthContext';
 
 export default function Catalogo() {
-  const { isAuthenticated } = useAuth();
+  const { authData } = useAuth();
   const [libros, setLibros] = useState([]);
   const [favoritos, setFavoritos] = useState([]);
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
@@ -15,12 +15,12 @@ export default function Catalogo() {
 
   useEffect(() => {
     fetchLibros();  
-    if (isAuthenticated && localStorage.getItem("rol") == 6) {
+    if (authData.isAuthenticated && authData.role == 6) {
       fetchFavoritos();
     }else{
       setFavoritos([]);
     }
-  }, [isAuthenticated]);
+  }, [authData]);
 
   const fetchLibros = () => {
     fetch('http://localhost:1337/api/libros?populate=*')
@@ -34,7 +34,7 @@ export default function Catalogo() {
   }
 
   const fetchFavoritos = () => {
-    const jwt = localStorage.getItem('jwt');
+    const jwt = authData.jwt;
     fetch('http://localhost:1337/api/favoritos', {
         headers: {
             'Authorization': `Bearer ${jwt}`

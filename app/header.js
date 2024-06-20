@@ -1,16 +1,14 @@
 import Link from "next/link";
-import { useAuth } from './contextos/AuthContext';
+import { useAuth } from "./contextos/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const { authData, logout } = useAuth();
+  const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('id');
-    localStorage.removeItem('rol');
-    localStorage.removeItem('username');
-
-    setIsAuthenticated(false);
+    logout();
+    router.push('/');
   };
 
   return (
@@ -21,11 +19,11 @@ export default function Header() {
         </div>
         <div className="flex items-center space-x-7">
           <Link href="/" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Catálogo</Link>
-          {isAuthenticated ? (
+          {authData.isAuthenticated ? (
             <div className="flex items-center space-x-7">
-              {(localStorage.getItem("rol") == 6 || localStorage.getItem("rol") == 4) && <Link href="/misprestamos" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mis préstamos</Link>}
-              {localStorage.getItem("rol") == 5 && <Link href="/misolicitud" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mi solicitud</Link>}
-              {localStorage.getItem("rol") == 3 && 
+              {(authData.role == 6 || authData.role == 4) && <Link href="/misprestamos" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mis préstamos</Link>}
+              {authData.role == 5 && <Link href="/misolicitud" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mi solicitud</Link>}
+              {authData.role == 3 && 
                 <>
                   <Link href="/solicitudes" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Solicitudes</Link>
                   <Link href="/prestamos" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Préstamos</Link>

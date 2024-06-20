@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAlert } from '@/app/contextos/AlertContext';
 import { useConfirmation } from '@/app/contextos/ConfirmationContext';
+import { useAuth } from '@/app/contextos/AuthContext';
 import Image from 'next/image';
 import Header from '@/app/header';
 import ReserveButton from '@/app/comunes/reserve-button';
@@ -14,7 +15,12 @@ export default function LibroDetalle({ params: { id } }) {
     const [libro, setLibro] = useState(null);
     const [loading, setLoading] = useState(true);
     const { alert, closeAlert } = useAlert();
+    const { authData } = useAuth();
     const { confirmation } = useConfirmation();
+
+    useEffect(() => {
+        fetchLibro();
+    });
 
     const fetchLibro = async () => {
         try {
@@ -22,8 +28,8 @@ export default function LibroDetalle({ params: { id } }) {
             const libroData = await libroResponse.json();
             const libro = libroData.data;
 
-            if (localStorage.getItem("rol") == 6) {
-                const jwt = localStorage.getItem('jwt');
+            if (authData.role == 6) {
+                const jwt = authData.jwt;
                 const favoritosResponse = await fetch('http://localhost:1337/api/favoritos', {
                     headers: {
                         'Authorization': `Bearer ${jwt}`
@@ -39,9 +45,9 @@ export default function LibroDetalle({ params: { id } }) {
                     esFavorito: esFavorito,
                     favoritoId: favorito ? favorito.id : null
                 });
+            } else {
+                setLibro(libro);
             }
-
-            setLibro(libro);
 
             setLoading(false);
         } catch (error) {
@@ -49,10 +55,6 @@ export default function LibroDetalle({ params: { id } }) {
             setLoading(false);
         }
     }
-
-    useEffect(() => {
-        fetchLibro();
-    }, []);
 
     if (loading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>;
@@ -73,7 +75,7 @@ export default function LibroDetalle({ params: { id } }) {
                     <LoanConfirmation/>
                 )}
                 <div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-6xl md:flex relative">
-                    {localStorage.getItem("rol") != 3 &&
+                    {authData.role != 3 &&
                     <div className="absolute top-2 right-2 mt-2 mr-2">
                         <FavButton size="2xl" libro={libro}/>
                     </div>}

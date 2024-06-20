@@ -9,7 +9,7 @@ import LoanConfirmation from '../confirmations/loan-confirmation';
 export default function Listado ({generoSeleccionado, handleGenderChange, searchTerm, handleTitleSearch,
     authorTerm, handleAuthorSearch, showOnlyFavorites, handleToggleFavorites,
     librosConFavorito, handleFavoriteChange}) {
-    const { isAuthenticated } = useAuth();
+    const { authData } = useAuth();
     const { alert, closeAlert } = useAlert();
     const { confirmation } = useConfirmation();
 
@@ -72,7 +72,7 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
                         className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border-l-0 border border-gray-300 rounded-e-lg" 
                         placeholder="Buscar autor..."/>
                 </div>
-                {isAuthenticated && localStorage.getItem("rol") == 6 && (
+                {authData.isAuthenticated && authData.role == 6 && (
                     <label className="inline-flex items-center cursor-pointer ml-5">
                         <input 
                             type="checkbox" 

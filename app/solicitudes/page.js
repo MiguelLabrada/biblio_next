@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useAuth } from '@/app/contextos/AuthContext';
 import Link from "next/link";
 import Header from "../header";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,14 +10,15 @@ export default function Solicitudes() {
     const [users, setUsers] = useState([]);
     const [busquedaDni, setBusquedaDni] = useState('');
     const [busquedaEmail, setBusquedaEmail] = useState('');
-    const [isRecent, setIsRecent] = useState(false); // Estado para el checkbox
+    const [isRecent, setIsRecent] = useState(false);
+    const { authData } = useAuth();
 
     useEffect(() => {
         fetchUsers();  
     }, []);
 
     const fetchUsers = () => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch('http://localhost:1337/api/users?filters[role][$eq]=5', {
             headers: {
                 'Authorization': `Bearer ${jwt}`

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from '@/app/contextos/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Header from "@/app/header";
@@ -19,13 +20,14 @@ export default function Usuario({ params: { id } }) {
     const [tituloConfirmacion, setTituloConfirmacion] = useState('');
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState('');
     const router = useRouter();
+    const { authData } = useAuth();
 
     useEffect(() => {
         fetchUserData();
     }, []);
 
     const fetchUserData = async () => {
-      const jwt = localStorage.getItem('jwt');
+      const jwt = authData.jwt;
       try {
         const response = await fetch(`http://localhost:1337/api/users/${id}?populate=*`, {
           headers: {
@@ -72,7 +74,7 @@ export default function Usuario({ params: { id } }) {
       }
 
       try {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
 
         const res = await fetch(`http://localhost:1337/api/users/${id}`, {
           method: 'PUT',

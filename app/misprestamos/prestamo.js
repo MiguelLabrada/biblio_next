@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from '@/app/contextos/AuthContext';
 import Image from "next/image";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faClock, faBook, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +14,7 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
     const portadaUrl = portada.data.attributes.url;
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const { authData } = useAuth();
 
     const getEstadoIcon = () => {
         if (estado === "Reservado") return <FontAwesomeIcon icon={faClock} className="text-orange-400" />;
@@ -29,7 +31,7 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
     };
 
     const handleRenovacion = () => {
-        if(localStorage.getItem('rol') == 4){
+        if(authData.role == 4){
             setShowPopup(true);
         } else {
             setShowConfirmation(true);

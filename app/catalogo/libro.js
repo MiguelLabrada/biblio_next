@@ -1,3 +1,4 @@
+import { useAuth } from "../contextos/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import ReserveButton from "../comunes/reserve-button";
@@ -5,11 +6,12 @@ import FavButton from "../comunes/fav-button";
 
 export default function Libro ({libro, onFavoriteChange }) {
     const {portada, titulo, autor, disponibilidad} = libro.attributes;
+    const { authData } = useAuth();
 
     return (
         <div className="flex flex-col items-center">
             <div className="bg-white rounded-xl w-72 h-auto py-4 shadow-md transform transition duration-200 hover:scale-105">             
-                {localStorage.getItem("rol") != 3 &&
+                {authData.role != 3 &&
                 <div className="absolute top-2 left-2">
                     <FavButton size="lg" libro={libro} onFavoriteChange={onFavoriteChange}/>
                 </div>

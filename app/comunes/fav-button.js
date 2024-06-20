@@ -6,16 +6,16 @@ import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function FavButton({size, libro, onFavoriteChange}) {
-    const { isAuthenticated } = useAuth();
+    const { authData } = useAuth();
     const { showAlert } = useAlert();
     const [esFavorito, setEsFavorito] = useState(libro.esFavorito);
 
     useEffect(() => {
       setEsFavorito(libro.esFavorito);
-    }, [libro.esFavorito]);
+    }, [libro]);
 
     const deleteFavorito = (favoritoId, libroId) => {
-        const jwt = localStorage.getItem('jwt');
+        const jwt = authData.jwt;
         fetch(`http://localhost:1337/api/favoritos/${favoritoId}`, {
           method: 'DELETE',
           headers: {
@@ -38,8 +38,8 @@ export default function FavButton({size, libro, onFavoriteChange}) {
     };
     
     const createFavorito = (libroId) => {
-        const jwt = localStorage.getItem('jwt');
-        const userId = localStorage.getItem('id');
+        const jwt = authData.jwt;
+        const userId = authData.id;
         fetch('http://localhost:1337/api/favoritos', {
           method: 'POST',
           headers: {
@@ -78,11 +78,11 @@ export default function FavButton({size, libro, onFavoriteChange}) {
       };
 
     const handleFavoriteClick = () => {
-        if (isAuthenticated && localStorage.getItem("rol") == 6) {
+        if (authData.isAuthenticated && authData.role == 6) {
           handleFavoriteChange(libro.id, esFavorito, libro.favoritoId);
-        } else if (isAuthenticated && localStorage.getItem("rol") == 5) {
+        } else if (authData.isAuthenticated && authData.role == 5) {
           showAlert('Podrá marcar un libro como favorito tras acudir a la biblioteca para que validen sus datos.');
-        } else if (isAuthenticated && localStorage.getItem("rol") == 4) {
+        } else if (authData.isAuthenticated && authData.role == 4) {
           showAlert('No podrá ver sus libros favoritos ni marcar nuevos mientras tenga préstamos pendientes de devolver.');
         } else {
           showAlert('Para poder marcar un libro como favorito tiene que estar registrado y autenticado en el sistema.');

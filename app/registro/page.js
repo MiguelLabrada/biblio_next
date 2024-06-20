@@ -18,7 +18,7 @@ export default function Registro() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, showError] = useState(false);
     const [messageError, setMessageError] = useState('');
-    const { setIsAuthenticated } = useAuth();
+    const { authData, login } = useAuth();
     const router = useRouter();
 
     const handleSubmit = async (e) => {
@@ -54,7 +54,9 @@ export default function Registro() {
 
             const userData = await fetchUserProfile(data.jwt);
     
-            setToken(data, userData);
+            login(data.jwt, data.user.id, userData.role.id, data.user.username);
+
+            router.push('/');
         } catch (error) {
             handleShowPopup(error.message);
         }
@@ -73,18 +75,6 @@ export default function Registro() {
 
         const userData = await res.json();
         return userData;
-    };
-
-    const setToken = (data, userData) => {
-        localStorage.setItem('jwt', data.jwt);
-        localStorage.setItem('id', data.user.id);
-        localStorage.setItem('rol', userData.role.id);
-
-        setIsAuthenticated(true);
-        
-        if (localStorage.getItem('jwt')) {
-            router.push('/');
-        }
     };
 
     const handleShowPopup = (message) => {
