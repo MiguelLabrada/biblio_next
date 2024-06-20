@@ -50,20 +50,26 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
                         <option key={index} value={genero}>{genero}</option>
                     ))}
                 </select>
-                <div>
+                <div className="relative">
+                    <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
                     <input 
                         type="text" 
                         value={searchTerm}
                         onChange={handleTitleSearch} 
-                        className="p-2.5 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border-s-gray-50 border border-gray-300" 
+                        className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border-s-gray-50 border border-gray-300" 
                         placeholder="Buscar título..."/>                        
                 </div>
-                <div>
+                <div className="relative">
+                    <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
                     <input 
                         type="text" 
                         value={authorTerm}
                         onChange={handleAuthorSearch} 
-                        className="p-2.5 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border-l-0 border border-gray-300 rounded-e-lg" 
+                        className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border-l-0 border border-gray-300 rounded-e-lg" 
                         placeholder="Buscar autor..."/>
                 </div>
                 {isAuthenticated && localStorage.getItem("rol") == 6 && (

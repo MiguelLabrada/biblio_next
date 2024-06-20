@@ -69,18 +69,28 @@ export default function Solicitudes() {
             </div>
             <div className="bg-[#D6DBDC] shadow-md flex justify-center fixed top-32 w-full z-10 pb-5 py-4">
                 <div className="flex space-x-4">
-                    <input 
-                        type="text" 
-                        value={busquedaDni}
-                        onChange={handleBusquedaDni} 
-                        className="p-2.5 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border border-gray-300 rounded-lg" 
-                        placeholder="Buscar dni..." />                        
-                    <input 
-                        type="text" 
-                        value={busquedaEmail}
-                        onChange={handleBusquedaEmail} 
-                        className="p-2.5 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border border-gray-300 rounded-lg" 
-                        placeholder="Buscar email..." />
+                    <div className="relative">
+                        <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>    
+                        <input 
+                            type="text" 
+                            value={busquedaDni}
+                            onChange={handleBusquedaDni} 
+                            className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border border-gray-300 rounded-lg" 
+                            placeholder="Buscar dni..." />
+                    </div>
+                    <div className="relative">
+                        <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>  
+                        <input 
+                            type="text" 
+                            value={busquedaEmail}
+                            onChange={handleBusquedaEmail} 
+                            className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border border-gray-300 rounded-lg" 
+                            placeholder="Buscar email..." />
+                    </div>
                     <label className="inline-flex items-center cursor-pointer ml-5">
                         <input 
                             type="checkbox" 
