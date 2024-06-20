@@ -194,7 +194,7 @@ export default function Prestamos() {
                     </button>
                 </div>
             </div>
-            <div className="bg-[#D6DBDC] mt-48 pt-10 pb-4">
+            <div className="bg-[#D6DBDC] mt-48 pt-10 pb-4 h-screen">
                 <div className="max-w-6xl mx-auto">
                     {filteredPrestamos.map(prestamo => (
                         <Prestamo key={prestamo.id} prestamo={prestamo} 

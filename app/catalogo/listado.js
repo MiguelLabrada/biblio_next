@@ -79,7 +79,7 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
                     </label>
                 )}
             </div>
-            <div className="bg-[#D6DBDC] mt-48 pt-6 pb-4 grid gap-y-7 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="bg-[#D6DBDC] h-screen mt-48 pt-6 pb-4 grid gap-y-7 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {librosConFavorito.map(libro => (
                         <Libro 
                             key={libro.id} 
