@@ -23,7 +23,7 @@ export default function Catalogo() {
   }, [authData]);
 
   const fetchLibros = () => {
-    fetch('http://localhost:1337/api/libros?populate=*')
+    fetch('http://localhost:1337/api/libros')
     .then(response => response.json())
     .then(data => {
       setLibros(data.data);

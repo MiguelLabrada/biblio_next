@@ -20,11 +20,11 @@ export default function LibroDetalle({ params: { id } }) {
 
     useEffect(() => {
         fetchLibro();
-    });
+    }, []);
 
     const fetchLibro = async () => {
         try {
-            const libroResponse = await fetch(`http://localhost:1337/api/libros/${id}?populate=*`);
+            const libroResponse = await fetch(`http://localhost:1337/api/libros/${id}`);
             const libroData = await libroResponse.json();
             const libro = libroData.data;
 
@@ -61,7 +61,6 @@ export default function LibroDetalle({ params: { id } }) {
     }
 
     const { titulo, autor, genero, sinopsis, isbn, portada, disponibilidad } = libro.attributes;
-    const portadaUrl = portada?.data?.attributes?.url;
 
     return (
         <main>
@@ -81,7 +80,7 @@ export default function LibroDetalle({ params: { id } }) {
                     </div>}
                     <div className="md:w-1/3 p-4">
                         <Image
-                            src={portadaUrl}
+                            src={portada}
                             alt={`Portada de ${titulo}`}
                             width={600}
                             height={600}

@@ -31,9 +31,9 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
     };
 
     const handleRenovacion = () => {
-        if(authData.role == 4){
+        if (authData.role == 4) {
             setShowPopup(true);
-        } else {
+        } else if(authData.role == 6) {
             setShowConfirmation(true);
         }
     };

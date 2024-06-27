@@ -18,7 +18,7 @@ export default function Libro ({libro, onFavoriteChange }) {
                 }
                 <div className="flex justify-center">
                 <Link href={`/libros/${libro.id}`} passHref>
-                    <Image width={200} height={200} src={portada.data.attributes.url} alt={`Portada libro ${titulo}`} />
+                    <Image width={200} height={200} src={portada} alt={`Portada libro ${titulo}`} />
                 </Link>
                 </div>
                 <div className="p-4 text-center">

@@ -7,7 +7,7 @@ import Confirmation from "../confirmations/confirmation";
 
 export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }) {
     const { id, isEnPrestamo, isDevolucionPendiente } = prestamo;
-    const { ejemplar, usuario, estado, fecha_devolucion, fecha_prestamo, fecha_lim_reserva, fecha_lim_prestamo } = prestamo.attributes;
+    const { ejemplar, usuario, estado, fecha_devolucion, fecha_prestamo, fecha_lim_reserva, fecha_lim_prestamo, renovacion_solicitada } = prestamo.attributes;
     const userId = usuario.data.id;
     const { username } = usuario.data.attributes;
     const rol = usuario.data.attributes.role.data.id;
@@ -71,7 +71,11 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
     const handleRenovar = () => {
         const fechaLimPrestamo = new Date(fecha_lim_prestamo);
         fechaLimPrestamo.setDate(fechaLimPrestamo.getDate() + 14);
-        onUpdate(id, "Prestado", { fecha_lim_prestamo: fechaLimPrestamo });
+        const updateData = {
+            fecha_lim_prestamo: fechaLimPrestamo,
+            renovacion_solicitada: false
+        };
+        onUpdate(id, "Prestado", updateData);
     };
 
     const handleDevolver = () => {
@@ -134,14 +138,15 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
                     <span className="ml-2 text-lg font-semibold">{getEstadoText()}</span>
                 </div>
             </div>
-            <div className="flex flex-col items-end">
+            <div className={`flex flex-col items-end ${estado !== "Devuelto" ? 'w-64' : ''}`}>
                 {isEnPrestamo && (
                     <>
                         <button 
                             className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300"
                             onClick={() => handleButtonClick('renovar')}
                         >
-                            Renovar
+                            {renovacion_solicitada && <FontAwesomeIcon icon={faExclamationCircle} className="text-white mr-2" />}
+                            {renovacion_solicitada ? 'Aceptar renovación' : 'Renovar'}
                         </button>
                         <button 
                             className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-lg shadow-md hover:bg-sky-600 transition duration-300"

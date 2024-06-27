@@ -12,6 +12,7 @@ export default function Prestamos() {
     const [ prestamos, setPrestamos ] = useState([]);
     const [ busquedaUser, setBusquedaUser ] = useState("");
     const [ busquedaLibro, setBusquedaLibro ] = useState("");
+    const [ showOnlyRenewalRequested, setShowOnlyRenewalRequested ] = useState(false);
     const { authData } = useAuth();
 
     const handleFiltroDevolucionPendiente = () => {
@@ -36,6 +37,10 @@ export default function Prestamos() {
 
     const handleBusquedaLibro = (event) => {
         setBusquedaLibro(event.target.value);
+    };
+
+    const handleRenewalRequested = () => {
+        setShowOnlyRenewalRequested(prev => !prev);
     };
 
     useEffect(() => {
@@ -97,7 +102,7 @@ export default function Prestamos() {
 
     const handleUpdatePrestamo = (id, newEstado, updateData) => {
         const jwt = authData.jwt;
-        fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario,ejemplar.libro.portada`, {
+        fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -167,16 +172,16 @@ export default function Prestamos() {
         .catch(error => {
             console.error('Error updating prestamo:', error);
         });
-      };
+    };
 
-      const filteredPrestamos = prestamos.filter(prestamo => {
+    const filteredPrestamos = prestamos.filter(prestamo => {
         const userName = prestamo.attributes.usuario?.data?.attributes?.username?.toLowerCase() || "";
         const bookTitle = prestamo.attributes.ejemplar?.data?.attributes?.libro?.data?.attributes?.titulo?.toLowerCase() || "";
 
         return (
             ((filtroDevolucionPendiente && prestamo.isDevolucionPendiente) ||
             (filtroRecogidaPendiente && prestamo.attributes.estado === "Reservado") ||
-            (filtroEnPrestamo && prestamo.isEnPrestamo) ||
+            (filtroEnPrestamo && prestamo.isEnPrestamo && (!showOnlyRenewalRequested || prestamo.attributes.renovacion_solicitada)) ||
             (filtroDevueltos && prestamo.attributes.estado === "Devuelto") ||
             (!filtroDevolucionPendiente && !filtroRecogidaPendiente && !filtroEnPrestamo && !filtroDevueltos)) &&
             (userName.includes(busquedaUser.toLowerCase()) && bookTitle.includes(busquedaLibro.toLowerCase()))
@@ -210,27 +215,41 @@ export default function Prestamos() {
                 </div>
             </div>
             <div className="bg-[#D6DBDC] fixed top-52 w-full flex justify-center shadow-md pb-4 z-10">
-                <div className="relative">
-                    <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                    <input 
-                        type="text" 
-                        value={busquedaUser}
-                        onChange={handleBusquedaUser} 
-                        className="border-2 border-gray-300 rounded-lg px-10 py-2 w-60 mr-24" 
-                        placeholder="Buscar usuario..." />       
-                </div>              
-                <div className="relative">
-                    <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                    <input 
-                        type="text" 
-                        value={busquedaLibro}
-                        onChange={handleBusquedaLibro} 
-                        className="border-2 border-gray-300 rounded-lg px-10 py-2 w-60" 
-                        placeholder="Buscar título..." />
+                <div className={`grid ${filtroEnPrestamo ? 'grid-cols-3' : 'grid-cols-2'}  gap-24`}>
+                    <div className="relative">
+                        <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            value={busquedaUser}
+                            onChange={handleBusquedaUser} 
+                            className="border-2 border-gray-300 rounded-lg px-10 py-2 w-60" 
+                            placeholder="Buscar usuario..." />       
+                    </div>              
+                    <div className="relative">
+                        <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            value={busquedaLibro}
+                            onChange={handleBusquedaLibro} 
+                            className="border-2 border-gray-300 rounded-lg px-10 py-2 w-60" 
+                            placeholder="Buscar título..." />
+                    </div>
+                    {filtroEnPrestamo && (
+                    <label className="flex items-center">
+                        <input 
+                            type="checkbox" 
+                            checked={showOnlyRenewalRequested} 
+                            onChange={handleRenewalRequested} 
+                            className="sr-only peer"
+                        />
+                        <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-green-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-400"/>
+                        <span className="ml-3 text-sm font-medium text-gray-900">Renovaciones solicitadas</span>
+                    </label>
+                )}
                 </div>
             </div>
             <div className="bg-[#D6DBDC] mt-60 pt-10 pb-4 h-screen">

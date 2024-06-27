@@ -18,7 +18,7 @@ export default function Registro() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, showError] = useState(false);
     const [messageError, setMessageError] = useState('');
-    const { authData, login } = useAuth();
+    const { login } = useAuth();
     const router = useRouter();
 
     const handleSubmit = async (e) => {
