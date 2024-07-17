@@ -118,7 +118,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
                 {isDevolucionPendiente && 
                 <>
                     <p className="text-gray-600">Fecha de recogida: {new Date(fecha_prestamo).toLocaleDateString()}</p>
-                    <p className="text-red-600 font-semibold">Devuelva inmediatamente el libro a la biblioteca</p>
+                    <p className="text-red-600 font-semibold">Fecha límite de devolución: {new Date(fecha_lim_prestamo).toLocaleDateString()}</p>
                 </>}
                 {estado === "Reservado" && <p className={`${new Date() > new Date(fecha_lim_reserva) ? 'text-red-600 font-semibold' : 'text-gray-600'}`}>Fecha límite de recogida: {new Date(fecha_lim_reserva).toLocaleDateString()}</p>}
                 {isEnPrestamo && 
