@@ -40,6 +40,7 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
             </div>
             <div className="bg-[#D6DBDC] shadow-md flex justify-center fixed top-32 w-full z-10 pb-5">
                 <select 
+                    data-testid="genero"
                     id="genero" 
                     value={generoSeleccionado} 
                     onChange={handleGenderChange} 
@@ -75,6 +76,7 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
                 {authData.isAuthenticated && authData.role == 6 && (
                     <label className="inline-flex items-center cursor-pointer ml-5">
                         <input 
+                            data-testid="soloFavoritos"
                             type="checkbox" 
                             checked={showOnlyFavorites} 
                             onChange={handleToggleFavorites} 

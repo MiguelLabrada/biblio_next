@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useState, useContext } from 'react';
 
-const ConfirmationContext = createContext();
+export const ConfirmationContext = createContext();
 
 export const ConfirmationProvider = ({ children }) => {
     const [confirmation, setConfirmation] = useState({ 

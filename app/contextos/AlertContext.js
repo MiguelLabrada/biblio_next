@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useState, useContext } from 'react';
 
-const AlertContext = createContext();
+export const AlertContext = createContext();
 
 export const AlertProvider = ({ children }) => {
     const [alert, setAlert] = useState({ show: false, message: '' });
