@@ -90,8 +90,8 @@ export default function FavButton({size, libro, onFavoriteChange}) {
     };
 
     return (
-        <button onClick={handleFavoriteClick}>
-          <FontAwesomeIcon icon={esFavorito ? fasHeart : farHeart} size={size} />
+        <button data-testid={`fav-${libro.id}`} onClick={handleFavoriteClick}>
+          <FontAwesomeIcon data-testid={`icon-${libro.id}`} icon={esFavorito ? fasHeart : farHeart} size={size} />
         </button>
     );
 }
