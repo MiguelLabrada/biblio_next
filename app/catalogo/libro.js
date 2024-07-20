@@ -9,7 +9,7 @@ export default function Libro ({libro, onFavoriteChange }) {
     const { authData } = useAuth();
 
     return (
-        <div className="flex flex-col items-center">
+        <div data-testid={`libro-${libro.id}`} className="flex flex-col items-center">
             <div className="bg-white rounded-xl w-72 h-auto py-4 shadow-md transform transition duration-200 hover:scale-105">             
                 {authData.role != 3 &&
                 <div className="absolute top-2 left-2">
