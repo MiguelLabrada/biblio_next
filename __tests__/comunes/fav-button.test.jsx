@@ -22,14 +22,6 @@ const mockAuthData  = {
     }
 };
 
-const mockAlertInactive = {
-    show: false
-};
-
-const mockAlertActive = {
-    show: true
-};
-
 const MockAuthProvider = ({ authType, children }) => (
     <AuthContext.Provider value={{ authData: mockAuthData[authType] }}>
         {children}
@@ -68,6 +60,24 @@ const mockLibroNonFav = {
     },
 };
 
+const mockAlertInactive = {
+    show: false
+};
+
+const mockOnFavoriteChange = jest.fn();
+
+const renderFavButton = (authType, mockLibro) => {
+    render(
+        <MockAuthProvider authType={authType}>
+            <MockAlertProvider alert={mockAlertInactive}>
+                <ConfirmationProvider>
+                    <FavButton size='2xl' libro={mockLibro} onFavoriteChange={mockOnFavoriteChange} />
+                </ConfirmationProvider>
+            </MockAlertProvider>
+        </MockAuthProvider>
+    );
+};
+
 global.fetch = jest.fn().mockImplementation((url, options) => {
     if (options.method === 'POST') {
         return Promise.resolve({
@@ -81,27 +91,13 @@ global.fetch = jest.fn().mockImplementation((url, options) => {
     }
 });
 
-const mockOnFavoriteChange = jest.fn();
-
-const renderFavButton = (authType, alert, mockLibro) => {
-    render(
-        <MockAuthProvider authType={authType}>
-            <MockAlertProvider alert={alert}>
-                <ConfirmationProvider>
-                    <FavButton size='2xl' libro={mockLibro} onFavoriteChange={mockOnFavoriteChange} />
-                </ConfirmationProvider>
-            </MockAlertProvider>
-        </MockAuthProvider>
-    );
-};
-
 afterEach(() => {
     global.fetch.mockClear();
 });
 
 it('should call onFavoriteChange when create favorite', async () => {
     const mockLibro = mockLibroNonFav;
-    renderFavButton('validatedUser', mockAlertInactive, mockLibro);
+    renderFavButton('validatedUser', mockLibro);
     const favButton = screen.getByTestId(`fav-${mockLibro.id}`);
     fireEvent.click(favButton);
     await waitFor(() => {
@@ -111,7 +107,7 @@ it('should call onFavoriteChange when create favorite', async () => {
 
 it('should change color icon when create favorite', async () => {
     const mockLibro = mockLibroNonFav;
-    renderFavButton('validatedUser', mockAlertInactive, mockLibro);
+    renderFavButton('validatedUser', mockLibro);
 
     const icon = screen.getByTestId(`icon-${mockLibroFav.id}`);
     expect(icon.getAttribute('data-prefix')).toBe('far');
@@ -125,7 +121,7 @@ it('should change color icon when create favorite', async () => {
 
 it('should call onFavoriteChange when delete favorite', async () => {
     const mockLibro = mockLibroFav;
-    renderFavButton('validatedUser', mockAlertInactive, mockLibro);
+    renderFavButton('validatedUser', mockLibro);
     const favButton = screen.getByTestId(`fav-${mockLibro.id}`);
     fireEvent.click(favButton);
     await waitFor(() => {
@@ -135,7 +131,7 @@ it('should call onFavoriteChange when delete favorite', async () => {
 
 it('should change color icon when delete favorite', async () => {
     const mockLibro = mockLibroFav;
-    renderFavButton('validatedUser', mockAlertInactive, mockLibro);
+    renderFavButton('validatedUser', mockLibro);
 
     const icon = screen.getByTestId(`icon-${mockLibroFav.id}`);
     expect(icon.getAttribute('data-prefix')).toBe('fas');
@@ -150,7 +146,7 @@ it('should change color icon when delete favorite', async () => {
 
 test('should show alert when pending user try to create a fav', async () => {
     const mockLibro = mockLibroFav;
-    renderFavButton('pendingUser', mockAlertInactive, mockLibro);
+    renderFavButton('pendingUser', mockLibro);
     const favButton = screen.getByTestId(`fav-${mockLibro.id}`);
     fireEvent.click(favButton);
     await waitFor(() => {
@@ -160,7 +156,7 @@ test('should show alert when pending user try to create a fav', async () => {
 
 test('should show alert when locked user try to create a fav', async () => {
     const mockLibro = mockLibroFav;
-    renderFavButton('lockedUser', mockAlertInactive, mockLibro);
+    renderFavButton('lockedUser', mockLibro);
     const favButton = screen.getByTestId(`fav-${mockLibro.id}`);
     fireEvent.click(favButton);
     await waitFor(() => {
@@ -170,7 +166,7 @@ test('should show alert when locked user try to create a fav', async () => {
 
 test('should show alert when public user try to create a fav', async () => {
     const mockLibro = mockLibroFav;
-    renderFavButton('public', mockAlertInactive, mockLibro);
+    renderFavButton('public', mockLibro);
     const favButton = screen.getByTestId(`fav-${mockLibro.id}`);
     fireEvent.click(favButton);
     await waitFor(() => {
