@@ -24,7 +24,7 @@ export default function ReserveButton({ libro }) {
 
     return (
         <>
-            <button className={`bg-blue-400 text-white font-bold py-2 px-4 rounded ${disponibilidad === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`} 
+            <button data-testid={`loan-${libro.id}`} className={`bg-blue-400 text-white font-bold py-2 px-4 rounded ${disponibilidad === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`} 
                 onClick={handleReserveClick}
                 disabled={disponibilidad === 0}
             >
