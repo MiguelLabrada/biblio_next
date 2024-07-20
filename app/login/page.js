@@ -34,9 +34,9 @@ export default function Login() {
             if (!res.ok) {
                 throw new Error(data.error.message);
             }
-            
+
             const userData = await fetchUserProfile(data.jwt);
-    
+
             login(data.jwt, data.user.id, userData.role.id, data.user.username);
 
             router.push('/');
@@ -75,7 +75,7 @@ export default function Login() {
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    {error && <FormError mensaje={messageError} onClose={handleClosePopup} />}
+                    {error && <FormError data-testid={'error'} mensaje={messageError} onClose={handleClosePopup} />}
                     <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                         Iniciar sesión en tu cuenta
                     </h1>
