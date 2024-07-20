@@ -15,9 +15,12 @@ export default function Catalogo() {
 
   useEffect(() => {
     fetchLibros();  
+  }, []);
+
+  useEffect(() => {
     if (authData.isAuthenticated && authData.role == 6) {
       fetchFavoritos();
-    }else{
+    } else {
       setFavoritos([]);
     }
   }, [authData]);
