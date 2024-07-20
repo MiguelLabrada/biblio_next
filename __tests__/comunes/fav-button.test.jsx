@@ -144,7 +144,7 @@ it('should change color icon when delete favorite', async () => {
     });
 });
 
-test('should show alert when pending user try to create a fav', async () => {
+it('should show alert when pending user try to create a fav', async () => {
     const mockLibro = mockLibroFav;
     renderFavButton('pendingUser', mockLibro);
     const favButton = screen.getByTestId(`fav-${mockLibro.id}`);
@@ -154,7 +154,7 @@ test('should show alert when pending user try to create a fav', async () => {
     });
 });
 
-test('should show alert when locked user try to create a fav', async () => {
+it('should show alert when locked user try to create a fav', async () => {
     const mockLibro = mockLibroFav;
     renderFavButton('lockedUser', mockLibro);
     const favButton = screen.getByTestId(`fav-${mockLibro.id}`);
@@ -164,7 +164,7 @@ test('should show alert when locked user try to create a fav', async () => {
     });
 });
 
-test('should show alert when public user try to create a fav', async () => {
+it('should show alert when public user try to create a fav', async () => {
     const mockLibro = mockLibroFav;
     renderFavButton('public', mockLibro);
     const favButton = screen.getByTestId(`fav-${mockLibro.id}`);

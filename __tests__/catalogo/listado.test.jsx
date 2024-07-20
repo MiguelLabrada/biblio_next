@@ -86,28 +86,28 @@ it('should render alert when alert.show is true', () => {
     expect(screen.getByText(/alert message/i)).toBeInTheDocument();
 });
 
-it('calls handleGenderChange on genre change', () => {
+it('should call handleGenderChange on genre change', () => {
     renderListado('public', mockAlertInactive);
     const genreSelect = screen.getByTestId('genero');
     fireEvent.change(genreSelect, { target: { value: 'Fantasía' } });
     expect(props.handleGenderChange).toHaveBeenCalled();
 });
 
-it('calls handleTitleSearch on title search input change', () => {
+it('should call handleTitleSearch on title search input change', () => {
     renderListado('public', mockAlertInactive);
     const titleInput = screen.getByPlaceholderText(/Buscar título.../i);
     fireEvent.change(titleInput, { target: { value: 'Test Title' } });
     expect(props.handleTitleSearch).toHaveBeenCalled();
 });
 
-it('calls handleAuthorSearch on author search input change', () => {
+it('should call handleAuthorSearch on author search input change', () => {
     renderListado('public', mockAlertInactive);
     const authorInput = screen.getByPlaceholderText(/Buscar autor.../i);
     fireEvent.change(authorInput, { target: { value: 'Test Author' } });
     expect(props.handleAuthorSearch).toHaveBeenCalled();
 });
 
-it('calls handleToggleFavorites on only favorites toggle click', () => {
+it('should call handleToggleFavorites on only favorites toggle click', () => {
     renderListado('validatedUser', mockAlertInactive);
     const favoritesCheckbox = screen.getByTestId('soloFavoritos');
     fireEvent.click(favoritesCheckbox);

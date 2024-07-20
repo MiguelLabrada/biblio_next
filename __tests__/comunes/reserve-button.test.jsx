@@ -123,7 +123,7 @@ it('should disable button when disponibilidad is 0', () => {
     expect(button).toBeDisabled();
 });
 
-test('should show alert when pending user try to reserve a book', async () => {
+it('should show alert when pending user try to reserve a book', async () => {
     const mockLibro = mockLibroDisponible;
     renderReserveButton('pendingUser', mockReserveConfirmationInactive, mockLibro);
     const button = screen.getByTestId(`loan-${mockLibro.id}`);
@@ -133,7 +133,7 @@ test('should show alert when pending user try to reserve a book', async () => {
     });
 });
 
-test('should show alert when locked user try to reserve a book', async () => {
+it('should show alert when locked user try to reserve a book', async () => {
     const mockLibro = mockLibroDisponible;
     renderReserveButton('lockedUser', mockReserveConfirmationInactive, mockLibro);
     const button = screen.getByTestId(`loan-${mockLibro.id}`);
@@ -143,7 +143,7 @@ test('should show alert when locked user try to reserve a book', async () => {
     });
 });
 
-test('should show alert when public user try to reserve a book', async () => {
+it('should show alert when public user try to reserve a book', async () => {
     const mockLibro = mockLibroDisponible;
     renderReserveButton('public', mockReserveConfirmationInactive, mockLibro);
     const button = screen.getByTestId(`loan-${mockLibro.id}`);
