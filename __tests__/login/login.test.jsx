@@ -79,9 +79,10 @@ beforeEach(() => {
     renderLogin('public');
 });
 
-it('should show render login form', () => {
-    const loginTitle = screen.getByText(/Iniciar sesión en tu cuenta/i);
-    expect(loginTitle).toBeInTheDocument();
+it('should render login form', () => {
+    expect(screen.getByText(/Iniciar sesión en tu cuenta/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('email@gmail.com')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('••••••••')).toBeInTheDocument();
 });
 
 it('should show update email state on change', () => {
