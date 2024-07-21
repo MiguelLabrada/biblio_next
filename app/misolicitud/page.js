@@ -181,6 +181,7 @@ export default function MiSolicitud() {
                       <div className="relative w-full mb-4">
                         <FontAwesomeIcon icon={faLock} className="absolute left-3 top-3 text-gray-400" />
                         <input type="password" name="password" id="password" 
+                          data-testid={'password'}
                           placeholder="********" 
                           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                           value={password}
@@ -189,6 +190,7 @@ export default function MiSolicitud() {
                       <div className="relative w-full mb-4">
                         <FontAwesomeIcon icon={faLock} className="absolute left-3 top-3 text-gray-400" />
                         <input type="password" name="confirmPassword" id="confirmPassword" 
+                          data-testid={'passwordConfirmation'}
                           placeholder="********" 
                           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                           value={confirmPassword}
