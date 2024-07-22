@@ -23,16 +23,14 @@ const MockAuthProvider = ({ children }) => (
     </AuthContext.Provider>
 );
 
-const mockLibrarian  = {
-    id: '1'
-};
+const mockUserId = 1;
 
 const renderUsuario = () => {
     render(
         <MockAuthProvider>
             <ConfirmationProvider>
                 <AlertProvider>
-                    <Usuario params={{ id: `${mockLibrarian.id}` }} />
+                    <Usuario params={{ id: `${mockUserId}` }} />
                 </AlertProvider>
             </ConfirmationProvider>
         </MockAuthProvider>
@@ -49,7 +47,7 @@ const mockUserWithoutPendingLoans = {
     username: 'johndoe',
     email: 'john@example.com',
     role: {
-        id: '6'
+        id: 6
     },
     prestamos_pendientes: '0',
 };
@@ -62,7 +60,7 @@ const mockLockedUserWithPendingLoans = {
     username: 'johndoe',
     email: 'john@example.com',
     role: {
-        id: '4'
+        id: 4
     },
     prestamos_pendientes: '2',
 };
@@ -75,19 +73,19 @@ const mockValidatedUserWithPendingLoans = {
     username: 'johndoe',
     email: 'john@example.com',
     role: {
-        id: '6'
+        id: 6
     },
     prestamos_pendientes: '2',
 };
 
 global.fetch = jest.fn().mockImplementation((url, options) => {
     switch (url) {
-        case `http://localhost:1337/api/users/${mockLibrarian.id}`:
+        case `http://localhost:1337/api/users/${mockUserId}`:
             return Promise.resolve({
                 ok: true,
                 json: () => Promise.resolve({}),
             });
-        case `http://localhost:1337/api/users/${mockLibrarian.id}?populate=*`:
+        case `http://localhost:1337/api/users/${mockUserId}?populate=*`:
             return Promise.resolve({
                 ok: true,
                 json: () => Promise.resolve(mockUser),
@@ -106,7 +104,7 @@ it('should fetch and display correct button message for validated user with pend
     
     renderUsuario();
 
-    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:1337/api/users/${mockLibrarian.id}?populate=*`, expect.any(Object));
+    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:1337/api/users/${mockUserId}?populate=*`, expect.any(Object));
 
     await waitFor(() => {
         expect(screen.getByText('Devoluciones pendientes: 2')).toBeInTheDocument();
@@ -120,7 +118,7 @@ it('should fetch and display correct button message for locked user with pending
     
     renderUsuario();
 
-    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:1337/api/users/${mockLibrarian.id}?populate=*`, expect.any(Object));
+    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:1337/api/users/${mockUserId}?populate=*`, expect.any(Object));
 
     await waitFor(() => {
         expect(screen.getByText('Devoluciones pendientes: 2')).toBeInTheDocument();
@@ -134,7 +132,7 @@ it('should fetch and display data of user without pending loans', async () => {
     
     renderUsuario();
 
-    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:1337/api/users/${mockLibrarian.id}?populate=*`, expect.any(Object));
+    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:1337/api/users/${mockUserId}?populate=*`, expect.any(Object));
 
     await waitFor(() => {
         expect(screen.getByTestId('fullName').value).toBe('John Doe');
@@ -188,7 +186,7 @@ it('should redirect to /prestamos on accept confirmation', async () => {
 
     fireEvent.click(screen.getByText('Confirmar'));
 
-    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:1337/api/users/${mockLibrarian.id}`, expect.any(Object));
+    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:1337/api/users/${mockUserId}`, expect.any(Object));
 
     await waitFor(() => {
         expect(mockRouterPush).toHaveBeenCalledWith('/prestamos');
