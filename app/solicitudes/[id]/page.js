@@ -130,7 +130,7 @@ export default function Solicitud({ params: { id } }) {
                                     <h2 className="text-lg font-semibold text-gray-700 mb-4 text-center">Datos personales</h2>
                                     <div className="relative w-full mb-4">
                                         <FontAwesomeIcon icon={faUser} className="absolute left-3 top-3 text-gray-400" />
-                                        <input type="text" name="fullName" id="fullName" 
+                                        <input type="text" name="fullName" id="fullName" data-testid="fullName"
                                         className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                                         value={fullName}
                                         onChange={(e) => setFullName(e.target.value)}
@@ -138,7 +138,7 @@ export default function Solicitud({ params: { id } }) {
                                     </div>
                                     <div className="relative w-full mb-4">
                                         <FontAwesomeIcon icon={faIdCard} className="absolute left-3 top-3 text-gray-400" />
-                                        <input type="text" name="dni" id="dni" 
+                                        <input type="text" name="dni" id="dni" data-testid="dni" 
                                         className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                                         value={dni}
                                         onChange={(e) => setDni(e.target.value)}
@@ -146,7 +146,7 @@ export default function Solicitud({ params: { id } }) {
                                     </div>
                                     <div className="relative w-full mb-4">
                                         <FontAwesomeIcon icon={faPhone} className="absolute left-3 top-3 text-gray-400" />
-                                        <input type="tel" name="phone" id="phone" 
+                                        <input type="tel" name="phone" id="phone" data-testid="phone" 
                                         className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
@@ -154,7 +154,7 @@ export default function Solicitud({ params: { id } }) {
                                     </div>
                                     <div className="relative w-full mb-4">
                                         <FontAwesomeIcon icon={faHome} className="absolute left-3 top-3 text-gray-400" />
-                                        <input type="text" name="address" id="address" 
+                                        <input type="text" name="address" id="address" data-testid="address" 
                                         className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                                         value={address}
                                         onChange={(e) => setAddress(e.target.value)}
@@ -165,7 +165,7 @@ export default function Solicitud({ params: { id } }) {
                                     <h2 className="text-lg font-semibold text-gray-700 mb-4 text-center">Datos de usuario</h2>
                                     <div className="relative w-full mb-4">
                                         <FontAwesomeIcon icon={faAt} className="absolute left-3 top-3 text-gray-400" />
-                                        <input type="text" name="username" id="username" 
+                                        <input type="text" name="username" id="username" data-testid="username" 
                                         className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
@@ -173,7 +173,7 @@ export default function Solicitud({ params: { id } }) {
                                     </div>
                                     <div className="relative w-full mb-4">
                                         <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-3 text-gray-400" />
-                                        <input type="email" name="email" id="email" 
+                                        <input type="email" name="email" id="email" data-testid="email" 
                                         className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5"  
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
