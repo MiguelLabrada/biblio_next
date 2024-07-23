@@ -196,19 +196,19 @@ export default function Prestamos() {
             </div>
             <div className="bg-[#D6DBDC] fixed top-36 w-full flex justify-center pb-6 z-10">
                 <div className="grid grid-cols-4 gap-24">
-                    <button type="button" className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroDevolucionPendiente ? 'bg-red-600 text-white border-slate-600' : 'bg-white text-red-600 border-red-600'}`}
+                    <button type="button" data-testid={'btn-dev-pend'} className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroDevolucionPendiente ? 'bg-red-600 text-white border-slate-600' : 'bg-white text-red-600 border-red-600'}`}
                         onClick={handleFiltroDevolucionPendiente}>
                         Devolución pendiente
                     </button>
-                    <button type="button" className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroRecogidaPendiente ? 'bg-orange-400 text-white border-slate-600' : 'bg-white text-orange-400 border-orange-400'}`}
+                    <button type="button" data-testid={'btn-rec-pend'} className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroRecogidaPendiente ? 'bg-orange-400 text-white border-slate-600' : 'bg-white text-orange-400 border-orange-400'}`}
                         onClick={handleFiltroRecogidaPendiente}>
                         Recogida pendiente
                     </button>
-                    <button type="button" className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroEnPrestamo ? 'bg-green-500 text-white border-slate-600' : 'bg-white text-green-500 border-green-500'}`}
+                    <button type="button" data-testid={'btn-prest'} className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroEnPrestamo ? 'bg-green-500 text-white border-slate-600' : 'bg-white text-green-500 border-green-500'}`}
                         onClick={handleFiltroEnPrestamo}>
                         En préstamo
                     </button>
-                    <button type="button" className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroDevueltos ? 'bg-sky-400 text-white border-slate-600' : 'bg-white text-sky-400 border-sky-400'}`}
+                    <button type="button" data-testid={'btn-dev'} className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroDevueltos ? 'bg-sky-400 text-white border-slate-600' : 'bg-white text-sky-400 border-sky-400'}`}
                         onClick={handleFiltroDevueltos}>
                         Devueltos
                     </button>

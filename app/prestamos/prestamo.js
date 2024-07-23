@@ -105,7 +105,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
     };
 
     return (
-        <div key={id} className={`max-w-6xl flex items-center p-6
+        <div key={id} data-testid={`prestamo-${id}`} className={`max-w-6xl flex items-center p-6
             ${isDevolucionPendiente ? 'bg-red-100' : ''} 
             ${estado === "Reservado" ? 'bg-amber-100' : ''} 
             ${isEnPrestamo ? 'bg-green-100' : ''} 
@@ -141,14 +141,14 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
             <div className={`flex flex-col items-end ${estado !== "Devuelto" ? 'w-64' : ''}`}>
                 {isEnPrestamo && (
                     <>
-                        <button 
+                        <button data-testid={`renovar-${id}`}
                             className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300"
                             onClick={() => handleButtonClick('renovar')}
                         >
                             {renovacion_solicitada && <FontAwesomeIcon icon={faExclamationCircle} className="text-white mr-2" />}
                             {renovacion_solicitada ? 'Aceptar renovación' : 'Renovar'}
                         </button>
-                        <button 
+                        <button data-testid={`devolver-${id}`}
                             className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-lg shadow-md hover:bg-sky-600 transition duration-300"
                             onClick={() => handleButtonClick('devolver')}
                         >
@@ -159,12 +159,13 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
                 {estado === "Reservado" && (
                     <>
                         <button 
+                            data-testid={`cancelar-${id}`}
                             className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300"
                             onClick={() => handleButtonClick('cancelar')}
                         >
                             Cancelar préstamo
                         </button>
-                        <button 
+                        <button data-testid={`prestar-${id}`}
                             className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300"
                             onClick={() => handleButtonClick('realizar')}
                         >
@@ -173,7 +174,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
                     </>
                 )}
                 {isDevolucionPendiente && rol == 6 && (
-                    <button 
+                    <button data-testid={`devolver-${id}`}
                         className="mt-2 px-4 py-2 bg-sky-500 text-white rounded-lg shadow-md hover:bg-sky-600 transition duration-300"
                         onClick={() => handleButtonClick('devolver')}
                     >
@@ -181,7 +182,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
                     </button>
                 )}
                 {isDevolucionPendiente && rol == 4 && (
-                    <button 
+                    <button data-testid={`desbloquear-${id}`}
                         className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300"
                         onClick={() => handleDesbloquear()}
                     >
