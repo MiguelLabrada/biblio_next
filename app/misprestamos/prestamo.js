@@ -52,7 +52,7 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
     };
 
     return (
-        <div key={id} className={`max-w-4xl mx-auto flex items-center p-6 
+        <div key={id} data-testid={`miprestamo-${id}`} className={`max-w-4xl mx-auto flex items-center p-6 
             ${estado === "Reservado" ? 'bg-amber-100' : ''} 
             ${estado === "Devuelto" ? 'bg-sky-100' : ''} 
             ${isDevolucionPendiente ? 'bg-red-100' : ''} 
@@ -84,7 +84,8 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
                     <span className="ml-2 text-lg font-semibold">{getEstadoText()}</span>
                 </div>
                 {isEnPrestamo && !renovacion_solicitada && 
-                    <button 
+                    <button
+                        data-testid={`solicitar-${prestamo.id}`} 
                         onClick={handleRenovacion} 
                         className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300"
                     >
