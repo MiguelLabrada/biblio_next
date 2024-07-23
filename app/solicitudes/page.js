@@ -117,7 +117,7 @@ export default function Solicitudes() {
                                     <p className="text-gray-600">{formatFecha(user.createdAt)}</p>
                                 </div>
                                 <Link href={`/solicitudes/${user.id}`}>
-                                    <button className='bg-blue-400 text-white font-bold py-2 px-4 rounded hover:bg-blue-600'>
+                                    <button data-testid={`acceder-${user.id}`} className='bg-blue-400 text-white font-bold py-2 px-4 rounded hover:bg-blue-600'>
                                         ACCEDER
                                     </button>
                                 </Link>
