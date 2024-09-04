@@ -21,12 +21,17 @@ export default function Header() {
           <Link href="/" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Catálogo</Link>
           {authData.isAuthenticated ? (
             <div className="flex items-center space-x-7">
-              {(authData.role == 6 || authData.role == 4) && <Link href="/misprestamos" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mis préstamos</Link>}
+              {(authData.role == 6 || authData.role == 4) && 
+                <>
+                  <Link href="/misprestamos" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mis préstamos</Link>
+                  <Link href="/miperfil" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mi perfil</Link>
+                </>}
               {authData.role == 5 && <Link href="/misolicitud" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mi solicitud</Link>}
               {authData.role == 3 && 
                 <>
                   <Link href="/solicitudes" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Solicitudes</Link>
                   <Link href="/prestamos" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Préstamos</Link>
+                  <Link href="/miperfil" className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Mi perfil</Link>
                 </>}
               <button onClick={handleLogout} className="text-gray-700 relative after:block after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:duration-300">Cerrar Sesión</button>
             </div>
