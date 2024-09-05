@@ -3,10 +3,14 @@ import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import Header from '../header';
 import FormError from '../alerts/form-error';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function ResetPassword() {
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, showError] = useState(false);
     const [messageError, setMessageError] = useState('');
     const router = useRouter();
@@ -74,31 +78,51 @@ export default function ResetPassword() {
                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                             <div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900">Nueva Contraseña</label>
-                                <input 
-                                    type="password" 
-                                    name="password" 
-                                    data-testid={'password'}
-                                    id="password" 
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
-                                    placeholder="••••••••" 
-                                    required 
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
+                                <div className="relative w-full mb-4">
+                                    <FontAwesomeIcon icon={faLock} className="absolute left-3 top-3 text-gray-400" />
+                                    <input 
+                                        type={showPassword ? "text" : "password"}
+                                        name="password" 
+                                        data-testid={'password'}
+                                        id="password" 
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
+                                        placeholder="••••••••" 
+                                        required 
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                    <button 
+                                        type="button" 
+                                        onClick={() => setShowPassword(!showPassword)} 
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                                    >
+                                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                                    </button>
+                                </div>
                             </div>
                             <div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900">Confirmar Nueva Contraseña</label>
-                                <input 
-                                    type="password" 
-                                    name="passwordConfirmation" 
-                                    data-testid={'passwordConfirmation'}
-                                    id="passwordConfirmation" 
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
-                                    placeholder="••••••••" 
-                                    required 
-                                    value={passwordConfirmation}
-                                    onChange={(e) => setPasswordConfirmation(e.target.value)}
-                                />
+                                <div className="relative w-full mb-4">
+                                    <FontAwesomeIcon icon={faLock} className="absolute left-3 top-3 text-gray-400" />
+                                    <input 
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        name="passwordConfirmation" 
+                                        data-testid={'passwordConfirmation'}
+                                        id="passwordConfirmation" 
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
+                                        placeholder="••••••••" 
+                                        required 
+                                        value={passwordConfirmation}
+                                        onChange={(e) => setPasswordConfirmation(e.target.value)}
+                                    />
+                                    <button 
+                                        type="button" 
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                                        >
+                                        <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                                    </button>
+                                </div>
                             </div>
                             <button 
                                 type="submit" 

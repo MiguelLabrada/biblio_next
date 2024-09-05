@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Header from '../header';
 import FormError from '../alerts/form-error';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function MiSolicitud() {
@@ -17,6 +17,8 @@ export default function MiSolicitud() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, showError] = useState(false);
     const [messageError, setMessageError] = useState('');
     const router = useRouter();
@@ -180,21 +182,35 @@ export default function MiSolicitud() {
                       </div>
                       <div className="relative w-full mb-4">
                         <FontAwesomeIcon icon={faLock} className="absolute left-3 top-3 text-gray-400" />
-                        <input type="password" name="password" id="password" 
+                        <input type={showPassword ? "text" : "password"} name="password" id="password" 
                           data-testid={'password'}
                           placeholder="********" 
                           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}/>
+                        <button 
+                          type="button" 
+                          onClick={() => setShowPassword(!showPassword)} 
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        >
+                          <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                        </button>
                       </div>
                       <div className="relative w-full mb-4">
                         <FontAwesomeIcon icon={faLock} className="absolute left-3 top-3 text-gray-400" />
-                        <input type="password" name="confirmPassword" id="confirmPassword" 
+                        <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" id="confirmPassword" 
                           data-testid={'passwordConfirmation'}
                           placeholder="********" 
                           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}/>
+                        <button 
+                          type="button" 
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        >
+                          <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                        </button>
                       </div>
                     </div>
                   </div>

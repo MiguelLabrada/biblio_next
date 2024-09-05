@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import Header from '../header';
 import FormError from '../alerts/form-error';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -58,16 +60,19 @@ export default function ForgotPassword() {
                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                             <div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                                <input 
-                                    type="email" 
-                                    name="email" 
-                                    id="email" 
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
-                                    placeholder="email@gmail.com" 
-                                    required 
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
+                                <div className="relative w-full">
+                                    <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-3 text-gray-400" />
+                                    <input 
+                                        type="email" 
+                                        name="email" 
+                                        id="email" 
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-2.5" 
+                                        placeholder="email@gmail.com" 
+                                        required 
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
                             </div>
                             <button 
                                 type="submit" 
