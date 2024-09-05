@@ -77,9 +77,9 @@ export default function Prestamos() {
         });
     };
 
-    const fetchPrestamo = (id) => {
+    const fetchPrestamosUser = (userId) => {
         const jwt = authData.jwt;
-        fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
+        fetch(`http://localhost:1337/api/prestamos?filters[usuario][id][$eq]=${userId}&populate=usuario.role,ejemplar.libro.portada`, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }
@@ -87,13 +87,25 @@ export default function Prestamos() {
         .then(response => response.json())
         .then(data => {
             const now = new Date();
-            const { estado, fecha_lim_prestamo } = data.data.attributes;
-            const isDevolucionPendiente = estado === "Prestado" && new Date(fecha_lim_prestamo) < now;
-            const isEnPrestamo = estado === "Prestado" && new Date(fecha_lim_prestamo) >= now;
-
-            setPrestamos(prevPrestamos => prevPrestamos.map(prestamo => 
-                prestamo.id === id ? { ...data.data, isDevolucionPendiente, isEnPrestamo } : prestamo
-            ));
+            const prestamosConFiltros = data.data.map(prestamo => {
+                const { estado, fecha_lim_prestamo } = prestamo.attributes;
+    
+                const isDevolucionPendiente = estado === "Prestado" && new Date(fecha_lim_prestamo) < now;
+                const isEnPrestamo = estado === "Prestado" && new Date(fecha_lim_prestamo) >= now;
+    
+                return {
+                    ...prestamo,
+                    isDevolucionPendiente,
+                    isEnPrestamo
+                };
+            });
+            setPrestamos(prevPrestamos => 
+                prevPrestamos.map(prestamo => 
+                    prestamo.attributes.usuario.data.id === userId 
+                        ? prestamosConFiltros.find(p => p.id === prestamo.id) || prestamo
+                        : prestamo
+                )
+            );
         })
         .catch(error => {
             console.error('Error fetching prestamo:', error);
@@ -151,7 +163,7 @@ export default function Prestamos() {
         });
     };
 
-    const desbloquear = (userId, id) => {
+    const desbloquear = (userId) => {
         const jwt = authData.jwt;
         fetch(`http://localhost:1337/api/users/${userId}`, {
             method: 'PUT',
@@ -167,7 +179,7 @@ export default function Prestamos() {
             if (!response.ok) {
                 throw new Error('Error en la solicitud de renovación');
             }
-            fetchPrestamo(id);
+            fetchPrestamosUser(userId);
         })
         .catch(error => {
             console.error('Error updating prestamo:', error);

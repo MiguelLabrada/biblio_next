@@ -60,7 +60,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
                 handleDevolver();
                 break;
             case 'desbloquear':
-                desbloquear(userId, id);
+                desbloquear(userId);
                 break;
             default:
                 break;
