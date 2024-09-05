@@ -1,8 +1,7 @@
 "use client";
 import { useState } from 'react';
-import { useRouter } from "next/navigation";
 import Header from '../header';
-import FormError from '../alerts/form-error';
+import FormAlert from '../alerts/form-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,8 +11,8 @@ export default function ResetPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, showError] = useState(false);
+    const [success, showSuccess] = useState(false);
     const [messageError, setMessageError] = useState('');
-    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,7 +49,7 @@ export default function ResetPassword() {
                 throw new Error(data.error.message);
             }
 
-            router.push('/login');
+            showSuccess(true);
         } catch (error) {
             handleShowPopup(error.message);
         }
@@ -65,13 +64,19 @@ export default function ResetPassword() {
         showError(false);
     };
 
+    const handleCloseSuccess = () => {
+        showSuccess(false);
+    };
+
     return (
         <section>
             <Header/>
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        {error && <FormError mensaje={messageError} onClose={handleClosePopup} />}
+                        {error && <FormAlert mensaje={messageError} onClose={handleClosePopup} />}
+                        {success && <FormAlert type="success" mensaje="Tu contraseña ha sido restablecida con éxito. Ahora puedes iniciar sesión con tu nueva contraseña."
+                                        onClose={handleCloseSuccess} />}
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                             Reseteo de contraseña
                         </h1>

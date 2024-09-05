@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { useAuth } from '../contextos/AuthContext';
-import FormError from '../alerts/form-error';
+import FormAlert from '../alerts/form-alert';
 import Header from '../header';
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -78,7 +78,7 @@ export default function Login() {
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    {error && <FormError data-testid={'error'} mensaje={messageError} onClose={handleClosePopup} />}
+                    {error && <FormAlert data-testid={'error'} mensaje={messageError} onClose={handleClosePopup} />}
                     <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                         Iniciar sesión en tu cuenta
                     </h1>

@@ -1,16 +1,15 @@
 "use client";
 import { useState } from 'react';
-import { useRouter } from "next/navigation";
 import Header from '../header';
-import FormError from '../alerts/form-error';
+import FormAlert from '../alerts/form-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [error, showError] = useState(false);
+    const [success, showSuccess] = useState(false);
     const [messageError, setMessageError] = useState('');
-    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,19 +31,23 @@ export default function ForgotPassword() {
                 throw new Error(data.error.message);
             }
 
-            router.push('/login');
+            showSuccess(true);
         } catch (error) {
-            handleShowPopup(error.message);
+            handleShowError(error.message);
         }
     }
 
-    const handleShowPopup = (message) => {
+    const handleShowError = (message) => {
         setMessageError(message);
         showError(true);
     };
 
-    const handleClosePopup = () => {
+    const handleCloseError = () => {
         showError(false);
+    };
+
+    const handleCloseSuccess = () => {
+        showSuccess(false);
     };
 
     return (
@@ -53,7 +56,9 @@ export default function ForgotPassword() {
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        {error && <FormError mensaje={messageError} onClose={handleClosePopup} />}
+                        {error && <FormAlert mensaje={messageError} onClose={handleCloseError} />}
+                        {success && <FormAlert type="success" mensaje="Se ha enviado un correo para restablecer tu contraseña. Por favor, revisa tu bandeja de entrada."
+                                        onClose={handleCloseSuccess} />}
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                             Recuperar contraseña
                         </h1>

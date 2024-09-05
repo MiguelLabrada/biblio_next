@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../contextos/AuthContext";
 import { useRouter } from "next/navigation";
 import Header from "../header";
-import FormError from "../alerts/form-error";
+import FormAlert from "../alerts/form-alert";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faIdCard, faPhone, faHome, faAt, faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
@@ -94,7 +94,7 @@ export default function Registro() {
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-2xl xl:p-0">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                {error && <FormError mensaje={messageError} onClose={handleClosePopup} />}
+                {error && <FormAlert mensaje={messageError} onClose={handleClosePopup} />}
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center">
                   Formulario de registro
                 </h1>

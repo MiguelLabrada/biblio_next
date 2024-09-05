@@ -1,12 +1,10 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/contextos/AuthContext';
-import { useRouter } from "next/navigation";
 import Header from '../header';
-import FormError from '../alerts/form-error';
+import FormAlert from '../alerts/form-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPhone, faHome, faAt, faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
 
 export default function MiPerfil() {
     const [fullName, setFullName] = useState('');
@@ -20,7 +18,7 @@ export default function MiPerfil() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, showError] = useState(false);
     const [messageError, setMessageError] = useState('');
-    const router = useRouter();
+    const [success, showSuccess] = useState(false);
     const { authData } = useAuth();
 
     useEffect(() => {
@@ -56,7 +54,7 @@ export default function MiPerfil() {
         e.preventDefault();
 
         if (password && password !== confirmPassword) {
-            handleShowPopup('Las contraseñas no coinciden');
+            handleShowError('Las contraseñas no coinciden');
             return;
         }
 
@@ -90,20 +88,24 @@ export default function MiPerfil() {
             if (!res.ok) {
                 throw new Error(data.error.message);
             }
-           
-            router.push('/');
+
+            showSuccess(true);
         } catch (error) {
-            handleShowPopup(error.message);
+            handleShowError(error.message);
         }
     };
 
-    const handleShowPopup = (message) => {
+    const handleShowError = (message) => {
       setMessageError(message);
       showError(true);
     };
 
-    const handleClosePopup = () => {
+    const handleCloseError = () => {
       showError(false);
+    };
+
+    const handleCloseSuccess = () => {
+      showSuccess(false);
     };
 
     return (
@@ -112,7 +114,8 @@ export default function MiPerfil() {
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-2xl xl:p-0">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                {error && <FormError mensaje={messageError} onClose={handleClosePopup} />}
+                {error && <FormAlert mensaje={messageError} onClose={handleCloseError} />}
+                {success && <FormAlert type="success" mensaje="Los cambios se aplicaron correctamente." onClose={handleCloseSuccess} />}
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center">
                   Mi perfil
                 </h1>
