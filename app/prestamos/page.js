@@ -260,12 +260,12 @@ export default function Prestamos() {
             <div className="bg-[#F6F1EB] text-center fixed top-14 w-full z-10 py-6">
                 <h1 className="text-4xl font-bold text-[#4A4E69]">Préstamos</h1>
             </div>
-            <div className="bg-[#F6F1EB] fixed top-36 w-full flex justify-center pb-6 z-10">
-                <div className="grid grid-cols-4 gap-24">
+            <div className="bg-[#F6F1EB] fixed top-36 w-full flex flex-col items-center shadow-md pb-4 z-10 space-y-6">                
+                <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-4">
                     <button 
                         type="button" 
                         data-testid={'btn-dev-pend'} 
-                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                        className={`font-bold rounded-xl text-md w-full px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
                             filtroDevolucionPendiente 
                             ? 'bg-red-600 text-white' 
                             : 'border-2 bg-white text-red-600 border-red-600 hover:bg-red-100'}`}
@@ -275,7 +275,7 @@ export default function Prestamos() {
                     <button 
                         type="button" 
                         data-testid={'btn-rec-pend'} 
-                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                        className={`font-bold rounded-xl text-md w-full px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
                             filtroRecogidaPendiente 
                             ? 'bg-orange-400 text-white' 
                             : 'border-2 bg-white text-orange-400 border-orange-400 hover:bg-orange-100'}`}
@@ -285,7 +285,7 @@ export default function Prestamos() {
                     <button 
                         type="button" 
                         data-testid={'btn-prest'} 
-                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                        className={`font-bold rounded-xl text-md w-full px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
                             filtroEnPrestamo 
                             ? 'bg-green-500 text-white' 
                             : 'border-2 bg-white text-green-500 border-green-500 hover:bg-green-100'}`}
@@ -295,7 +295,7 @@ export default function Prestamos() {
                     <button 
                         type="button" 
                         data-testid={'btn-dev'} 
-                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                        className={`font-bold rounded-xl text-md w-full px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
                             filtroDevueltos 
                             ? 'bg-sky-400 text-white' 
                             : 'border-2 bg-white text-sky-400 border-sky-400 hover:bg-sky-100'}`}
@@ -303,9 +303,7 @@ export default function Prestamos() {
                         Devueltos
                     </button>
                 </div>
-            </div>
-            <div className="bg-[#F6F1EB] fixed top-52 w-full flex justify-center shadow-md pb-4 z-10">
-                <div className={`grid ${filtroEnPrestamo ? 'grid-cols-3' : 'grid-cols-2'}  gap-24`}>
+                <div className={`grid ${filtroEnPrestamo ? 'grid-cols-3' : 'grid-cols-2'} gap-12`}>
                     <div className="relative">
                         <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -339,15 +337,17 @@ export default function Prestamos() {
                         <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-green-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-400"/>
                         <span className="ml-3 text-sm font-medium text-gray-900">Renovaciones solicitadas</span>
                     </label>
-                )}
+                    )}
                 </div>
             </div>
-            <div className="bg-[#F6F1EB] mt-60 pt-10 pb-4 h-screen">
-                <div className="max-w-6xl mx-auto">
+            <div className="bg-[#F6F1EB] min-h-screen lg:mt-64 md:mt-80 mt-auto pt-10 pb-4">
+                <div className="max-w-5xl mx-auto px-4">
+                    <div className="grid grid-cols-1 gap-4">
                     {sortedPrestamos.map(prestamo => (
                         <Prestamo key={prestamo.id} prestamo={prestamo} 
                             onEliminar={handleDeletePrestamo} onUpdate={handleUpdatePrestamo} desbloquear={desbloquear}/>
                     ))}
+                    </div>
                 </div>
             </div>
             {successMessage && (
@@ -360,4 +360,5 @@ export default function Prestamos() {
             )}
         </main>
     );
+    
 }

@@ -116,11 +116,11 @@ export default function MisPrestamos() {
                 <h1 className="text-4xl font-bold text-[#4A4E69]">Mis préstamos</h1>
             </div>
             <div className="bg-[#F6F1EB] fixed top-36 w-full flex justify-center shadow-md pb-4 z-10">
-                <div className="grid grid-cols-4 gap-24">
+                <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-4">
                     <button 
                         type="button" 
                         data-testid={'btn-dev-pend'} 
-                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                        className={`font-bold rounded-xl text-md w-full px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
                             filtroDevolucionPendiente 
                             ? 'bg-red-600 text-white' 
                             : 'border-2 bg-white text-red-600 border-red-600 hover:bg-red-100'}`}
@@ -130,7 +130,7 @@ export default function MisPrestamos() {
                     <button 
                         type="button" 
                         data-testid={'btn-rec-pend'} 
-                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                        className={`font-bold rounded-xl text-md w-full px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
                             filtroRecogidaPendiente 
                             ? 'bg-orange-400 text-white' 
                             : 'border-2 bg-white text-orange-400 border-orange-400 hover:bg-orange-100'}`}
@@ -140,7 +140,7 @@ export default function MisPrestamos() {
                     <button 
                         type="button" 
                         data-testid={'btn-prest'} 
-                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                        className={`font-bold rounded-xl text-md w-full px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
                             filtroEnPrestamo 
                             ? 'bg-green-500 text-white' 
                             : 'border-2 bg-white text-green-500 border-green-500 hover:bg-green-100'}`}
@@ -150,7 +150,7 @@ export default function MisPrestamos() {
                     <button 
                         type="button" 
                         data-testid={'btn-dev'} 
-                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                        className={`font-bold rounded-xl text-md w-full px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
                             filtroDevueltos 
                             ? 'bg-sky-400 text-white' 
                             : 'border-2 bg-white text-sky-400 border-sky-400 hover:bg-sky-100'}`}
@@ -159,11 +159,13 @@ export default function MisPrestamos() {
                     </button>
                 </div>
             </div>
-            <div className="bg-[#F6F1EB] h-screen mt-48 pt-10 pb-4">
-                <div className="max-w-6xl mx-auto">
+            <div className="bg-[#F6F1EB] h-screen lg:mt-48 md:mt-64 sm:mt-80 pt-10 pb-4">
+                <div className="max-w-5xl mx-auto px-4">
+                    <div className="grid grid-cols-1 gap-4">
                     {filteredPrestamos.map(prestamo => (
                         <Prestamo key={prestamo.id} prestamo={prestamo} solicitar_renovacion={solicitar_renovacion} />
                     ))}
+                    </div>
                 </div>
             </div>
             {successMessage && (

@@ -105,14 +105,18 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
     };
 
     return (
-        <div key={id} data-testid={`prestamo-${id}`} className={`max-w-6xl flex items-center p-6
-            ${isDevolucionPendiente ? 'bg-red-100' : ''} 
+        <div key={id} data-testid={`prestamo-${id}`} className={`flex p-6
             ${estado === "Reservado" ? 'bg-amber-100' : ''} 
-            ${isEnPrestamo ? 'bg-green-100' : ''} 
             ${estado === "Devuelto" ? 'bg-sky-100' : ''} 
+            ${isDevolucionPendiente ? 'bg-red-100' : ''} 
+            ${isEnPrestamo ? 'bg-green-100' : ''} 
             shadow-lg rounded-lg mb-4`}>
-            <Image width={100} height={150} src={portadaUrl} alt={titulo} className="mr-4 rounded-lg" />
-            <div className="flex flex-col w-96">
+            
+            <div className="w-24 flex-shrink-0">
+                <Image width={100} height={150} src={portadaUrl} alt={titulo} className="w-full h-auto rounded-sm" />
+            </div>
+    
+            <div className="flex-grow px-4 flex flex-col justify-center">
                 <Link href={`/usuarios/${userId}`} className="text-lg font-medium text-blue-500 underline hover:text-blue-700 transition duration-300">{username}</Link>
                 <h2 className="text-2xl font-bold">{titulo}</h2>
                 {isDevolucionPendiente && 
@@ -132,13 +136,12 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
                     <p className="text-gray-600">Fecha de devolución: {new Date(fecha_devolucion).toLocaleDateString()}</p>
                 </>}
             </div>
-            <div className={`${estado === "Devuelto" ? "ml-auto" : "mx-auto"}`}>
+    
+            <div className="w-60 h-full flex-shrink-0 flex flex-col items-center justify-center">
                 <div className="flex items-center px-3 py-1 rounded-lg">
                     {getEstadoIcon()}
                     <span className="ml-2 text-lg font-semibold">{getEstadoText()}</span>
                 </div>
-            </div>
-            <div className={`flex flex-col items-end ${estado !== "Devuelto" ? 'w-64' : ''}`}>
                 {isEnPrestamo && (
                     <>
                         <button data-testid={`renovar-${id}`}
@@ -190,6 +193,7 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
                     </button>
                 )}
             </div>
+    
             {showConfirmation && (
                 <Confirmation
                     titulo={tituloConfirmacion}
@@ -200,4 +204,5 @@ export default function Prestamo({ prestamo, onEliminar, onUpdate, desbloquear }
             )}
         </div>
     );
+    
 }

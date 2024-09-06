@@ -52,14 +52,18 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
     };
 
     return (
-        <div key={id} data-testid={`miprestamo-${id}`} className={`max-w-4xl mx-auto flex items-center p-6 
+        <div key={id} data-testid={`miprestamo-${id}`} className={`flex p-6
             ${estado === "Reservado" ? 'bg-amber-100' : ''} 
             ${estado === "Devuelto" ? 'bg-sky-100' : ''} 
             ${isDevolucionPendiente ? 'bg-red-100' : ''} 
             ${isEnPrestamo ? 'bg-green-100' : ''} 
-            shadow-lg rounded-lg mb-4`}>
-            <Image width={100} height={150} src={portadaUrl} alt={titulo} className="mr-4 rounded-lg" />
-            <div className="flex flex-col flex-grow">
+            shadow-lg rounded-lg`}>
+            
+            <div className="w-24 flex-shrink-0">
+                <Image width={100} height={150} src={portadaUrl} alt={titulo} className="w-full h-auto rounded-sm" />
+            </div>
+            
+            <div className="flex-grow px-4 flex flex-col justify-center">
                 <h2 className="text-2xl font-bold">{titulo}</h2>
                 {estado === "Reservado" && <p className="text-gray-600">Fecha límite de recogida: {new Date(fecha_lim_reserva).toLocaleDateString()}</p>}
                 {isDevolucionPendiente && 
@@ -78,7 +82,8 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
                     <p className="text-gray-600">Fecha de devolución: {new Date(fecha_devolucion).toLocaleDateString()}</p>
                 </>}
             </div>
-            <div className="flex flex-col items-end">
+            
+            <div className="w-56 h-full flex-shrink-0 flex flex-col items-center justify-center">
                 <div className="flex items-center px-3 py-1 rounded-lg">
                     {getEstadoIcon()}
                     <span className="ml-2 text-lg font-semibold">{getEstadoText()}</span>
@@ -93,9 +98,10 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
                     </button>
                 }
                 {isEnPrestamo && renovacion_solicitada && 
-                    <span className="ml-2 text-lg font-semibold">Renovación solicitada</span>
+                    <span className="mt-2 text-lg font-semibold">Renovación solicitada</span>
                 }
             </div>
+            
             {showConfirmation && (
                 <Confirmation
                     titulo={'Confirmación de solicitud de renovación'}
@@ -108,4 +114,5 @@ export default function Prestamo({ prestamo, solicitar_renovacion }) {
                 onClose={handleClosePopup}/>}
         </div>
     );
+    
 }
