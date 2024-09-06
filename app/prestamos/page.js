@@ -13,6 +13,7 @@ export default function Prestamos() {
     const [ busquedaUser, setBusquedaUser ] = useState("");
     const [ busquedaLibro, setBusquedaLibro ] = useState("");
     const [ showOnlyRenewalRequested, setShowOnlyRenewalRequested ] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(null);
     const { authData } = useAuth();
 
     const handleFiltroDevolucionPendiente = () => {
@@ -58,7 +59,7 @@ export default function Prestamos() {
         .then(data => {
             const now = new Date();
             const prestamosConFiltros = data.data.map(prestamo => {
-                const { estado, fecha_lim_prestamo } = prestamo.attributes;
+                const { estado, fecha_lim_prestamo, fecha_prestamo } = prestamo.attributes;
 
                 const isDevolucionPendiente = estado === "Prestado" && new Date(fecha_lim_prestamo) < now;
                 const isEnPrestamo = estado === "Prestado" && new Date(fecha_lim_prestamo) >= now;
@@ -88,7 +89,7 @@ export default function Prestamos() {
         .then(data => {
             const now = new Date();
             const prestamosConFiltros = data.data.map(prestamo => {
-                const { estado, fecha_lim_prestamo } = prestamo.attributes;
+                const { estado, fecha_lim_prestamo, fecha_prestamo } = prestamo.attributes;
     
                 const isDevolucionPendiente = estado === "Prestado" && new Date(fecha_lim_prestamo) < now;
                 const isEnPrestamo = estado === "Prestado" && new Date(fecha_lim_prestamo) >= now;
@@ -96,7 +97,9 @@ export default function Prestamos() {
                 return {
                     ...prestamo,
                     isDevolucionPendiente,
-                    isEnPrestamo
+                    isEnPrestamo,
+                    fecha_lim_prestamo: new Date(fecha_lim_prestamo),
+                    fecha_prestamo: new Date(fecha_prestamo)
                 };
             });
             setPrestamos(prevPrestamos => 
@@ -137,6 +140,17 @@ export default function Prestamos() {
             setPrestamos(prevPrestamos => prevPrestamos.map(prestamo => 
                 prestamo.id === id ? { ...data.data, isDevolucionPendiente, isEnPrestamo } : prestamo
             ));
+
+            if(newEstado == "Devuelto"){
+                setSuccessMessage('El préstamo ha sido devuelto correctamente.');
+            }else if(newEstado == "Prestado" && updateData.fecha_prestamo){
+                setSuccessMessage('La libro ha sido prestado correctamente.');
+            }else{
+                setSuccessMessage('El préstamo ha sido renovado correctamente.');
+            }
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 2000);
         })
         .catch(error => {
             console.error('Error updating prestamo:', error);
@@ -157,6 +171,11 @@ export default function Prestamos() {
                 throw new Error('Error en la solicitud de renovación');
             }
             setPrestamos(prestamos.filter(prestamo => prestamo.id !== id));
+
+            setSuccessMessage('La reserva se canceló correctamente.');
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 2000);
         })
         .catch(error => {
             console.error('Error updating prestamo:', error);
@@ -180,6 +199,11 @@ export default function Prestamos() {
                 throw new Error('Error en la solicitud de renovación');
             }
             fetchPrestamosUser(userId);
+
+            setSuccessMessage('El usuario ha sido desbloqueado correctamente.');
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 2000);
         })
         .catch(error => {
             console.error('Error updating prestamo:', error);
@@ -200,33 +224,87 @@ export default function Prestamos() {
         );
     });
 
+    const sortedPrestamos = filteredPrestamos.sort((a, b) => {
+        const noFiltrosActivos = !filtroDevolucionPendiente && !filtroRecogidaPendiente && !filtroEnPrestamo && !filtroDevueltos;
+
+        if ((filtroDevolucionPendiente || noFiltrosActivos) && a.isDevolucionPendiente !== b.isDevolucionPendiente) {
+            return a.isDevolucionPendiente ? -1 : 1;
+        }
+        if ((filtroRecogidaPendiente || noFiltrosActivos) && a.attributes.estado === "Reservado" && b.attributes.estado !== "Reservado") {
+            return -1;
+        }
+        if ((filtroEnPrestamo || noFiltrosActivos) && a.isEnPrestamo !== b.isEnPrestamo) {
+            return a.isEnPrestamo ? -1 : 1;
+        }
+        if ((filtroDevueltos || noFiltrosActivos) && a.attributes.estado === "Devuelto" && b.attributes.estado !== "Devuelto") {
+            return -1;
+        }
+    
+        if (a.isDevolucionPendiente && b.isDevolucionPendiente) {
+            return new Date(b.attributes.fecha_lim_prestamo) - new Date(a.attributes.fecha_lim_prestamo);
+        }
+        if (a.attributes.estado === "Reservado" && b.attributes.estado === "Reservado") {
+            return new Date(b.attributes.fecha_lim_reserva) - new Date(a.attributes.fecha_lim_reserva);
+        }
+        if (a.isEnPrestamo && b.isEnPrestamo) {
+            return new Date(b.attributes.fecha_lim_prestamo) - new Date(a.attributes.fecha_lim_prestamo);
+        }
+        if (a.attributes.estado === "Devuelto" && b.attributes.estado === "Devuelto") {
+            return new Date(b.attributes.fecha_devolucion) - new Date(a.attributes.fecha_devolucion);
+        }
+    });
+
     return (
         <main>
             <Header />
-            <div className="bg-[#D6DBDC] text-center fixed top-14 w-full z-10 py-6">
-                <h1 className="text-4xl font-bold">Préstamos</h1>
+            <div className="bg-[#F6F1EB] text-center fixed top-14 w-full z-10 py-6">
+                <h1 className="text-4xl font-bold text-[#4A4E69]">Préstamos</h1>
             </div>
-            <div className="bg-[#D6DBDC] fixed top-36 w-full flex justify-center pb-6 z-10">
+            <div className="bg-[#F6F1EB] fixed top-36 w-full flex justify-center pb-6 z-10">
                 <div className="grid grid-cols-4 gap-24">
-                    <button type="button" data-testid={'btn-dev-pend'} className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroDevolucionPendiente ? 'bg-red-600 text-white border-slate-600' : 'bg-white text-red-600 border-red-600'}`}
+                    <button 
+                        type="button" 
+                        data-testid={'btn-dev-pend'} 
+                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                            filtroDevolucionPendiente 
+                            ? 'bg-red-600 text-white' 
+                            : 'border-2 bg-white text-red-600 border-red-600 hover:bg-red-100'}`}
                         onClick={handleFiltroDevolucionPendiente}>
                         Devolución pendiente
                     </button>
-                    <button type="button" data-testid={'btn-rec-pend'} className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroRecogidaPendiente ? 'bg-orange-400 text-white border-slate-600' : 'bg-white text-orange-400 border-orange-400'}`}
+                    <button 
+                        type="button" 
+                        data-testid={'btn-rec-pend'} 
+                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                            filtroRecogidaPendiente 
+                            ? 'bg-orange-400 text-white' 
+                            : 'border-2 bg-white text-orange-400 border-orange-400 hover:bg-orange-100'}`}
                         onClick={handleFiltroRecogidaPendiente}>
                         Recogida pendiente
                     </button>
-                    <button type="button" data-testid={'btn-prest'} className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroEnPrestamo ? 'bg-green-500 text-white border-slate-600' : 'bg-white text-green-500 border-green-500'}`}
+                    <button 
+                        type="button" 
+                        data-testid={'btn-prest'} 
+                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                            filtroEnPrestamo 
+                            ? 'bg-green-500 text-white' 
+                            : 'border-2 bg-white text-green-500 border-green-500 hover:bg-green-100'}`}
                         onClick={handleFiltroEnPrestamo}>
                         En préstamo
                     </button>
-                    <button type="button" data-testid={'btn-dev'} className={`border-2 font-bold rounded-lg text-md w-60 px-5 py-2.5 ${filtroDevueltos ? 'bg-sky-400 text-white border-slate-600' : 'bg-white text-sky-400 border-sky-400'}`}
+                    <button 
+                        type="button" 
+                        data-testid={'btn-dev'} 
+                        className={`font-bold rounded-xl text-md w-60 px-5 py-3 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md ${
+                            filtroDevueltos 
+                            ? 'bg-sky-400 text-white' 
+                            : 'border-2 bg-white text-sky-400 border-sky-400 hover:bg-sky-100'}`}
                         onClick={handleFiltroDevueltos}>
                         Devueltos
                     </button>
                 </div>
             </div>
-            <div className="bg-[#D6DBDC] fixed top-52 w-full flex justify-center shadow-md pb-4 z-10">
+            <div className="bg-[#F6F1EB] fixed top-52 w-full flex justify-center shadow-md pb-4 z-10">
                 <div className={`grid ${filtroEnPrestamo ? 'grid-cols-3' : 'grid-cols-2'}  gap-24`}>
                     <div className="relative">
                         <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -236,7 +314,7 @@ export default function Prestamos() {
                             type="text" 
                             value={busquedaUser}
                             onChange={handleBusquedaUser} 
-                            className="border-2 border-gray-300 rounded-lg px-10 py-2 w-60" 
+                            className="p-2.5 px-10 text-md text-gray-900 bg-white rounded-lg border border-gray-400 focus:ring-[#4A4E69] focus:border-[#4A4E69] w-60" 
                             placeholder="Buscar usuario..." />       
                     </div>              
                     <div className="relative">
@@ -247,7 +325,7 @@ export default function Prestamos() {
                             type="text" 
                             value={busquedaLibro}
                             onChange={handleBusquedaLibro} 
-                            className="border-2 border-gray-300 rounded-lg px-10 py-2 w-60" 
+                            className="p-2.5 px-10 text-md text-gray-900 bg-white rounded-lg border border-gray-400 focus:ring-[#4A4E69] focus:border-[#4A4E69] w-60" 
                             placeholder="Buscar título..." />
                     </div>
                     {filtroEnPrestamo && (
@@ -264,14 +342,22 @@ export default function Prestamos() {
                 )}
                 </div>
             </div>
-            <div className="bg-[#D6DBDC] mt-60 pt-10 pb-4 h-screen">
+            <div className="bg-[#F6F1EB] mt-60 pt-10 pb-4 h-screen">
                 <div className="max-w-6xl mx-auto">
-                    {filteredPrestamos.map(prestamo => (
+                    {sortedPrestamos.map(prestamo => (
                         <Prestamo key={prestamo.id} prestamo={prestamo} 
                             onEliminar={handleDeletePrestamo} onUpdate={handleUpdatePrestamo} desbloquear={desbloquear}/>
                     ))}
                 </div>
             </div>
+            {successMessage && (
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 text-white px-8 py-4 rounded-lg shadow-lg z-50 max-w-sm w-full flex items-center space-x-4">
+                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span className="text-lg font-semibold">{successMessage}</span>
+                </div>
+            )}
         </main>
     );
 }

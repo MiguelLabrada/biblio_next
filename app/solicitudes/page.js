@@ -66,11 +66,11 @@ export default function Solicitudes() {
     return (
         <main>
             <Header/>
-            <div className="bg-[#D6DBDC] text-center fixed top-14 w-full z-10 py-4">
-                <h1 className="text-4xl font-bold">Solicitudes</h1>
+            <div className="bg-[#F6F1EB] text-center fixed top-14 w-full z-10 py-4">
+                <h1 className="text-4xl font-bold text-[#4A4E69]">Solicitudes</h1>
             </div>
-            <div className="bg-[#D6DBDC] shadow-md flex justify-center fixed top-32 w-full z-10 pb-5 py-4">
-                <div className="flex space-x-4">
+            <div className="bg-[#F6F1EB] shadow-md flex justify-center fixed top-32 w-full z-10 pb-5">
+            <div className='grid grid-cols-3 gap-16'>
                     <div className="relative">
                         <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -79,7 +79,7 @@ export default function Solicitudes() {
                             type="text" 
                             value={busquedaDni}
                             onChange={handleBusquedaDni} 
-                            className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border border-gray-300 rounded-lg" 
+                            className="p-2.5 px-10 text-md text-gray-900 bg-white rounded-lg border border-gray-400 focus:ring-[#4A4E69] focus:border-[#4A4E69] w-full" 
                             placeholder="Buscar dni..." />
                     </div>
                     <div className="relative">
@@ -90,10 +90,10 @@ export default function Solicitudes() {
                             type="text" 
                             value={busquedaEmail}
                             onChange={handleBusquedaEmail} 
-                            className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border border-gray-300 rounded-lg" 
+                            className="p-2.5 px-10 text-md text-gray-900 bg-white rounded-lg border border-gray-400 focus:ring-[#4A4E69] focus:border-[#4A4E69] w-full" 
                             placeholder="Buscar email..." />
                     </div>
-                    <label className="inline-flex items-center cursor-pointer ml-5">
+                    <label className="inline-flex items-center cursor-pointer">
                         <input 
                             type="checkbox" 
                             checked={isRecent} 

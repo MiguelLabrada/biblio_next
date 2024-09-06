@@ -35,59 +35,64 @@ export default function Listado ({generoSeleccionado, handleGenderChange, search
             {confirmation.showLoanConfirmation && (
                 <LoanConfirmation/>
             )}
-            <div className="bg-[#D6DBDC] text-center fixed top-14 w-full z-10 py-4">
-                <h1 className="text-4xl font-bold">Catálogo</h1>
+            <div className="bg-[#F6F1EB] text-center fixed top-14 w-full z-10 py-4">
+                <h1 className="text-4xl font-bold text-[#4A4E69]">Catálogo</h1>
             </div>
-            <div className="bg-[#D6DBDC] shadow-md flex justify-center fixed top-32 w-full z-10 pb-5">
-                <select 
-                    data-testid="genero"
-                    id="genero" 
-                    value={generoSeleccionado} 
-                    onChange={handleGenderChange} 
-                    className="py-2.5 px-4 text-sm font-medium bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200"
-                    style={{ textAlignLast: 'center' }}>
-                    <option value="">Cualquier categoría</option>
-                    {generos.map((genero, index) => (
-                        <option key={index} value={genero}>{genero}</option>
-                    ))}
-                </select>
-                <div className="relative">
-                    <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                    <input 
-                        type="text" 
-                        value={searchTerm}
-                        onChange={handleTitleSearch} 
-                        className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border-s-gray-50 border border-gray-300" 
-                        placeholder="Buscar título..."/>                        
-                </div>
-                <div className="relative">
-                    <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                    <input 
-                        type="text" 
-                        value={authorTerm}
-                        onChange={handleAuthorSearch} 
-                        className="p-2.5 px-10 text-sm text-gray-900 sm:w-30 md:w-60 bg-gray-50 border-l-0 border border-gray-300 rounded-e-lg" 
-                        placeholder="Buscar autor..."/>
-                </div>
-                {authData.isAuthenticated && authData.role == 6 && (
-                    <label className="inline-flex items-center cursor-pointer ml-5">
+            <div className="bg-[#F6F1EB] shadow-md flex justify-center fixed top-32 w-full z-10 pb-5">
+                <div className={`grid ${authData.isAuthenticated && authData.role == 6 ? 'grid-cols-4' : 'grid-cols-3'}  gap-16`}>
+                    <div className="relative">
+                    <select 
+                        data-testid="genero"
+                        id="genero" 
+                        value={generoSeleccionado} 
+                        onChange={handleGenderChange} 
+                        className="py-2.5 text-md font-medium bg-[#F8F8F8] border border-gray-400 rounded-lg hover:bg-[#E6E6E6] w-full"
+                        style={{ textAlignLast: 'center' }}>
+                        <option value="">Cualquier categoría</option>
+                        {generos.map((genero, index) => (
+                            <option key={index} value={genero}>{genero}</option>
+                        ))}
+                    </select>
+
+                    </div>
+                    <div className="relative">
+                        <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
                         <input 
-                            data-testid="soloFavoritos"
-                            type="checkbox" 
-                            checked={showOnlyFavorites} 
-                            onChange={handleToggleFavorites} 
-                            className="sr-only peer"
-                        />
-                        <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-yellow-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-400"/>
-                        <span className="ms-3 text-sm font-medium text-gray-900">Solo favoritos</span>
-                    </label>
-                )}
+                            type="text" 
+                            value={searchTerm}
+                            onChange={handleTitleSearch} 
+                            className="p-2.5 px-10 text-md text-gray-900 bg-white rounded-lg border border-gray-400 focus:ring-[#4A4E69] focus:border-[#4A4E69] w-full" 
+                            placeholder="Buscar título..."/>                        
+                    </div>
+                    <div className="relative">
+                        <svg className="h-5 w-5 text-gray-400 absolute left-3 top-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            value={authorTerm}
+                            onChange={handleAuthorSearch} 
+                            className="p-2.5 px-10 text-md text-gray-900 bg-white rounded-lg border border-gray-400 focus:ring-[#4A4E69] focus:border-[#4A4E69] w-full" 
+                            placeholder="Buscar autor..."/>
+                    </div>
+                    {authData.isAuthenticated && authData.role == 6 && (
+                        <label className="flex items-center">
+                            <input 
+                                data-testid="soloFavoritos"
+                                type="checkbox" 
+                                checked={showOnlyFavorites} 
+                                onChange={handleToggleFavorites} 
+                                className="sr-only peer"
+                            />
+                            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-yellow-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#9A8C98]"/>
+                            <span className="ms-3 text-sm font-medium text-gray-900">Solo favoritos</span>
+                        </label>
+                    )}
+                </div>
             </div>
-            <div className="bg-[#D6DBDC] h-screen mt-48 pt-6 pb-4 grid gap-y-7 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="bg-[#F6F1EB] h-screen mt-48 pt-6 grid gap-y-7 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {librosConFavorito.map(libro => (
                         <Libro 
                             key={libro.id} 
