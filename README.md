@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Desarrollo de una aplicación web para la gestión de pequeñas bibliotecas
 
-## Getting Started
+Este proyecto se centra en el desarrollo de una aplicación web para la gestión bibliotecaria diaria, diseñada específicamente para bibliotecas pequeñas que no están integradas en redes oficiales. El objetivo principal es ofrecer a estas entidades una solución tecnológica accesible y fácil de adoptar, que permita la interacción virtual con sus usuarios de manera eficiente.
 
-First, run the development server:
+## Prototipos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+A continuación se presenta el diseño inicial de los prototipos de la aplicación:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Inicio de sesión:
+![Prototipo del inicio de sesión.](./public/login.png)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Solicitud de registro:
+![Prototipo de la solicitud de registro no enviada.](./public/solicitud.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Perfil:
+![Prototipo de mi perfil editable.](./public/perfil.png)
 
-## Learn More
+- Catálogo para usuarios no autenticados:
+![Prototipo del catálogo para usuarios no autenticados.](./public/catalogo-publico.png)
 
-To learn more about Next.js, take a look at the following resources:
+- Catálogo para usuarios autenticados:
+![Prototipo del catálogo para usuarios autenticados.](./public/catalogo-login.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Información detallada de un libro:
+![Prototipo de la información de un libro.](./public/info-libro.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Gestión de mis reservas y préstamos:
+![Prototipo de mis préstamos pendientes de devolver y recoger.](./public/mis-prestamos-1.png)
+![Prototipo de mis préstamos activos y devueltos.](./public/mis-prestamos-2.png)
 
-## Deploy on Vercel
+- Préstamo de un libro en línea por el biblitecario:
+![Prototipo del préstamo por el bibliotecario.](./public/reserva-admin.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Gestión de las reservas y préstamos totales por el biblitecario:
+![Prototipo de la gestión del bibliotecario de préstamos pendientes de devolver y recoger.](./public/prestamos-1.png)
+![Prototipo de la gestión del bibliotecario de préstamos activos y devueltos.](./public/prestamos-2.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Información del usuario asociado a un préstamo:
+![Prototipo de la información del usuario de un préstamo.](./public/bloquear.png)
+
+- Gestión de las solicitudes de registro de usuarios:
+![Prototipo de la gestión de solicitudes de registro.](./public/solicitudes.png)
+
+- Información detallada de una solicitud de registro de usuario:
+![Prototipo de la información de una solicitud de registro.](./public/validar.png)
