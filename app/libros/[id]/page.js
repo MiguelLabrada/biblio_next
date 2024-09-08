@@ -63,43 +63,50 @@ export default function LibroDetalle({ params: { id } }) {
     const { titulo, autor, genero, sinopsis, isbn, portada, disponibilidad } = libro.attributes;
 
     return (
-        <main>
-            <Header />
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-                {alert.show && <FavReserveAlert mensaje={alert.message} onClose={closeAlert} />}
-                {confirmation.showReserveConfirmation && (
-                    <ReserveConfirmation/>
-                )}
-                {confirmation.showLoanConfirmation && (
-                    <LoanConfirmation/>
-                )}
-                <div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-6xl md:flex relative">
-                    {authData.role != 3 &&
-                    <div className="absolute top-2 right-2 mt-2 mr-2">
-                        <FavButton size="2xl" libro={libro}/>
-                    </div>}
-                    <div className="md:w-1/3 p-4">
-                        <Image
-                            src={portada}
-                            alt={`Portada de ${titulo}`}
-                            width={600}
-                            height={600}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                    <div className="p-8 md:w-2/3">
-                        <h2 className="text-3xl font-bold mb-4">{titulo}</h2>
-                        <h3 className="text-2xl text-gray-700 mb-6">por {autor}</h3>
-                        <p className="text-lg text-gray-600 mb-4"><strong>Género:</strong> {genero}</p>
-                        <p className="text-lg text-gray-600 mb-4"><strong>ISBN:</strong> {isbn}</p>
-                        <p className="text-lg text-gray-600 mb-8"><strong>Sinopsis:</strong> {sinopsis}</p>
-                        <div className="flex justify-center items-center">
-                            <p className="text-lg mr-4">Unidades disponibles: {disponibilidad}</p>
-                            <ReserveButton libro={libro} />
-                        </div>
-                    </div>
+        <section>
+          <Header />
+          <div className="container mx-auto px-4 py-8 lg:mt-24 mt-14">
+            {alert.show && <FavReserveAlert mensaje={alert.message} onClose={closeAlert} />}
+            {confirmation.showReserveConfirmation && (
+                <ReserveConfirmation/>
+            )}
+            {confirmation.showLoanConfirmation && (
+                <LoanConfirmation/>
+            )}
+            <div className="bg-white shadow-lg rounded-lg p-6 lg:p-8 relative">              
+              {authData.role != 3 &&
+              <div className="absolute top-2 right-2 mt-2 mr-2">
+                  <FavButton size="2xl" libro={libro}/>
+              </div>}
+              <div className="flex flex-col lg:flex-row items-center">
+                {/* Imagen del libro */}
+                <div className="flex-shrink-0 lg:w-1/3 w-full mb-6 lg:mb-0">
+                  <Image 
+                    src={portada || '/default-book-cover.jpg'} 
+                    alt={`Portada del libro ${titulo}`} 
+                    width={300} 
+                    height={450} 
+                    className="object-cover rounded-lg mx-auto" 
+                  />
                 </div>
+    
+                {/* Detalles del libro */}
+                <div className="flex flex-col lg:w-2/3 lg:ml-8 w-full">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">{titulo}</h1>
+                  <p className="text-2xl text-gray-700 mb-4">por {autor}</p>
+                  <p className="text-lg text-gray-600 mb-2"><strong>Género:</strong> {genero}</p>
+                  <p className="text-lg text-gray-600 mb-2"><strong>ISBN:</strong> {isbn}</p>
+                  <p className="text-lg text-gray-600 mb-4"><strong>Sinopsis:</strong> {sinopsis}</p>
+    
+                  {/* Disponibilidad y botón reservar */}
+                  <div className="flex justify-center items-center">
+                    <p className="text-lg mr-4">Unidades disponibles: {disponibilidad}</p>
+                    <ReserveButton libro={libro} />
+                </div>
+                </div>
+              </div>
             </div>
-        </main>
-    );
+          </div>
+        </section>
+      );
 }
