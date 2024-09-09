@@ -1,6 +1,6 @@
 # Desarrollo de una Aplicación Web para la Gestión de Pequeñas Bibliotecas
 
-Este proyecto se centra en el desarrollo de una aplicación web para la gestión bibliotecaria diaria, diseñada específicamente para bibliotecas pequeñas que no están integradas en redes oficiales. El objetivo principal es ofrecer a estas entidades una solución tecnológica accesible y fácil de adoptar, que permita la interacción virtual con sus usuarios de manera eficiente.
+Este proyecto tiene como objetivo desarrollar una solución web para la gestión diaria de bibliotecas pequeñas, no integradas en redes oficiales. La aplicación está diseñada para ser accesible y fácil de adoptar, facilitando la interacción virtual con los usuarios y optimizando la gestión de recursos bibliotecarios.
 
 ## Frontend
 
