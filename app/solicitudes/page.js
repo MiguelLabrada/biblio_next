@@ -19,7 +19,7 @@ export default function Solicitudes() {
 
     const fetchUsers = () => {
         const jwt = authData.jwt;
-        fetch('http://localhost:1337/api/users?filters[role][$eq]=5', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users?filters[role][$eq]=5`, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }

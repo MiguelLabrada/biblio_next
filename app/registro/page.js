@@ -32,7 +32,7 @@ export default function Registro() {
         }
 
         try {
-            const res = await fetch('http://localhost:1337/api/auth/local/register', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/local/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export default function Registro() {
     }
 
     const fetchUserProfile = async (jwt) => {
-        const res = await fetch(`http://localhost:1337/api/users/me?populate=*`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me?populate=*`, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }

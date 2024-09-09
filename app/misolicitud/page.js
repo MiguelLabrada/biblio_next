@@ -30,7 +30,7 @@ export default function MiSolicitud() {
   const fetchUserData = async () => {
       const jwt = authData.jwt;
       try {
-          const response = await fetch('http://localhost:1337/api/users/me?populate=*', {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me?populate=*`, {
               headers: {
                   'Authorization': `Bearer ${jwt}`
               }
@@ -78,7 +78,7 @@ export default function MiSolicitud() {
               userData.password = password;
           }
 
-          const res = await fetch(`http://localhost:1337/api/users/${id}`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${id}`, {
               method: 'PUT',
               headers: {
                   'Authorization': `Bearer ${jwt}`,

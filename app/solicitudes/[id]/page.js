@@ -28,7 +28,7 @@ export default function Solicitud({ params: { id } }) {
     const fetchUserData = async () => {
       const jwt = authData.jwt;
       try {
-        const response = await fetch(`http://localhost:1337/api/users/${id}?populate=*`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${id}?populate=*`, {
           headers: {
             'Authorization': `Bearer ${jwt}`
           }
@@ -72,7 +72,7 @@ export default function Solicitud({ params: { id } }) {
         try {
             let response;
             if (confirmationAction === 'validate') {
-                response = await fetch(`http://localhost:1337/api/users/${id}`, {
+                response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${jwt}`,
@@ -89,7 +89,7 @@ export default function Solicitud({ params: { id } }) {
                     }),
                 });
             } else if (confirmationAction === 'delete') {
-                response = await fetch(`http://localhost:1337/api/users/${id}`, {
+                response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${jwt}`

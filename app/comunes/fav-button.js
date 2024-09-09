@@ -16,7 +16,7 @@ export default function FavButton({size, libro, onFavoriteChange}) {
 
     const deleteFavorito = (favoritoId, libroId) => {
         const jwt = authData.jwt;
-        fetch(`http://localhost:1337/api/favoritos/${favoritoId}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/favoritos/${favoritoId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${jwt}`
@@ -40,7 +40,7 @@ export default function FavButton({size, libro, onFavoriteChange}) {
     const createFavorito = (libroId) => {
         const jwt = authData.jwt;
         const userId = authData.id;
-        fetch('http://localhost:1337/api/favoritos', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/favoritos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

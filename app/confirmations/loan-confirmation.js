@@ -12,7 +12,7 @@ export default function LoanConfirmation() {
 
     const loanBook = () => {
         const jwt = authData.jwt;
-        fetch('http://localhost:1337/api/prestamos', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/prestamos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

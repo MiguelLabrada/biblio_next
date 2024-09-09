@@ -24,13 +24,13 @@ export default function LibroDetalle({ params: { id } }) {
 
     const fetchLibro = async () => {
         try {
-            const libroResponse = await fetch(`http://localhost:1337/api/libros/${id}`);
+            const libroResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/libros/${id}`);
             const libroData = await libroResponse.json();
             const libro = libroData.data;
 
             if (authData.role == 6) {
                 const jwt = authData.jwt;
-                const favoritosResponse = await fetch('http://localhost:1337/api/favoritos', {
+                const favoritosResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/favoritos`, {
                     headers: {
                         'Authorization': `Bearer ${jwt}`
                     }

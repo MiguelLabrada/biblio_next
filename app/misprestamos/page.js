@@ -35,7 +35,7 @@ export default function MisPrestamos() {
 
     const fetchPrestamos = () => {
         const jwt = authData.jwt;
-        fetch('http://localhost:1337/api/prestamos?populate=usuario.role,ejemplar.libro.portada', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/prestamos?populate=usuario.role,ejemplar.libro.portada`, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }
@@ -65,7 +65,7 @@ export default function MisPrestamos() {
 
     const solicitar_renovacion = (id) => {
         const jwt = authData.jwt;
-        fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${jwt}`,

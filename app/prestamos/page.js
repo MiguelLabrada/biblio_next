@@ -50,7 +50,7 @@ export default function Prestamos() {
 
     const fetchPrestamos = () => {
         const jwt = authData.jwt;
-        fetch('http://localhost:1337/api/prestamos?populate=usuario.role,ejemplar.libro.portada', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/prestamos?populate=usuario.role,ejemplar.libro.portada`, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }
@@ -80,7 +80,7 @@ export default function Prestamos() {
 
     const fetchPrestamosUser = (userId) => {
         const jwt = authData.jwt;
-        fetch(`http://localhost:1337/api/prestamos?filters[usuario][id][$eq]=${userId}&populate=usuario.role,ejemplar.libro.portada`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/prestamos?filters[usuario][id][$eq]=${userId}&populate=usuario.role,ejemplar.libro.portada`, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }
@@ -117,7 +117,7 @@ export default function Prestamos() {
 
     const handleUpdatePrestamo = (id, newEstado, updateData) => {
         const jwt = authData.jwt;
-        fetch(`http://localhost:1337/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/prestamos/${id}?populate=usuario.role,ejemplar.libro.portada`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ export default function Prestamos() {
 
     const handleDeletePrestamo = (id) => {
         const jwt = authData.jwt;
-        fetch(`http://localhost:1337/api/prestamos/${id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/prestamos/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ export default function Prestamos() {
 
     const desbloquear = (userId) => {
         const jwt = authData.jwt;
-        fetch(`http://localhost:1337/api/users/${userId}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${jwt}`,

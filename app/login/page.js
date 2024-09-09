@@ -21,7 +21,7 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const res = await fetch(`http://localhost:1337/api/auth/local`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/local`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export default function Login() {
     }
 
     const fetchUserProfile = async (jwt) => {
-        const res = await fetch(`http://localhost:1337/api/users/me?populate=*`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me?populate=*`, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }

@@ -29,7 +29,7 @@ export default function Usuario({ params: { id } }) {
     const fetchUserData = async () => {
       const jwt = authData.jwt;
       try {
-        const response = await fetch(`http://localhost:1337/api/users/${id}?populate=*`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${id}?populate=*`, {
           headers: {
             'Authorization': `Bearer ${jwt}`
           }
@@ -76,7 +76,7 @@ export default function Usuario({ params: { id } }) {
       try {
         const jwt = authData.jwt;
 
-        const res = await fetch(`http://localhost:1337/api/users/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${id}`, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${jwt}`,

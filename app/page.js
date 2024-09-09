@@ -26,7 +26,7 @@ export default function Catalogo() {
   }, [authData]);
 
   const fetchLibros = () => {
-    fetch('http://localhost:1337/api/libros')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/libros`)
     .then(response => response.json())
     .then(data => {
       setLibros(data.data);
@@ -38,7 +38,7 @@ export default function Catalogo() {
 
   const fetchFavoritos = () => {
     const jwt = authData.jwt;
-    fetch('http://localhost:1337/api/favoritos', {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/favoritos`, {
         headers: {
             'Authorization': `Bearer ${jwt}`
         }
